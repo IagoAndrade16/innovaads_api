@@ -1,0 +1,1 @@
+declare namespace express_xss_sanitizer {}
