@@ -1,6 +1,8 @@
 import * as http from 'http';
 
 import { PM2 } from '../core/PM2';
+import { Database } from '../database/Database';
+
 
 export async function onListening() {
 	PM2.emitReady();
@@ -11,7 +13,7 @@ export async function onListening() {
 
 export async function shutDownGracefully(server: http.Server) {
 	server.close(async () => {
-		// await Database.close();
+		await Database.close();
 		process.exit(0);
 	});
 }

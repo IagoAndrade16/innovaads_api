@@ -1,8 +1,9 @@
-import { DependencyInjection } from '@/core/DependencyInjection';
-import { Environment } from '@/core/Enviroment';
+
 import cors from 'cors';
 import express from 'express';
 import 'express-async-errors';
+import { DependencyInjection } from '../core/DependencyInjection';
+import { Environment } from '../core/Enviroment';
 
 
 const app = express();

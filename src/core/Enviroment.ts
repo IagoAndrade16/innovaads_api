@@ -5,7 +5,16 @@ import { ValidationsUtils } from './ValidationUtils';
 
 export class Environment {
   private static varsSchema = yup.object({
-  	
+		NODE_ENV: yup.string().required(),
+		PORT: yup.number().required(),
+
+		MYSQL_DATABASE: yup.string().required(),
+  	MYSQL_PORT: yup.number().required(),
+		MYSQL_HOST: yup.string().required(),
+		MYSQL_USER: yup.string().required(),
+		MYSQL_PASS: yup.string().required(),
+
+		DB_LOGGING: yup.boolean().required(),
   });
 
   static vars: InferType<typeof Environment.varsSchema>;
