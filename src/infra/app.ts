@@ -1,3 +1,5 @@
+import { DependencyInjection } from '@/core/DependencyInjection';
+import { Environment } from '@/core/Enviroment';
 import cors from 'cors';
 import express from 'express';
 import 'express-async-errors';
@@ -5,8 +7,8 @@ import 'express-async-errors';
 
 const app = express();
 
-// Environment.assertInitialized();
-// DependencyInjection.init();
+Environment.assertInitialized();
+DependencyInjection.init()
 
 app.use(cors({ origin: '*' }));
 app.options('*', cors());
