@@ -7,7 +7,6 @@ import { app } from '../../../../infra/app';
 const route = '/users';
 const usecase = find(CreateUserUseCase);
 
-
 describe('Schema Validation', () => {
   it('should validate required params', async () => {
     const res = await request(app).post(route).send({});

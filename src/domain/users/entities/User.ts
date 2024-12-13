@@ -1,4 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { find } from "../../../core/DependencyInjection";
+import { JwtProvider, jwtProviderAlias } from "../../../providers/jwt/JwtProvider";
 
 @Entity('users')
 export class User {
@@ -22,4 +24,12 @@ export class User {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  static async generateUserToken(input: {
+    id: string;
+  }): Promise<string> {
+    const jwtProvider = find<JwtProvider>(jwtProviderAlias);
+
+    return jwtProvider.sign({ id: input.id });
+  }
 }

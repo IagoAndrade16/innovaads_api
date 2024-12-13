@@ -3,11 +3,14 @@ import { UsersRepository, usersRepositoryAlias } from "../domain/users/repositor
 import { UsersRepositoryTypeOrm } from "../domain/users/repositories/implementations/UsersRepositoryTypeOrm";
 import { HashProvider, hashProviderAlias } from "../providers/hash/HashProvider";
 import { HashProviderImpl } from "../providers/hash/implementations/HashProviderImpl";
+import { JwtProvider, jwtProviderAlias } from "../providers/jwt/JwtProvider";
+import { JwtProviderImpl } from "../providers/jwt/implementations/JwtProviderImpl";
 
 export class DependencyInjection {
   static init(): void {
     container.registerSingleton<UsersRepository>(usersRepositoryAlias, UsersRepositoryTypeOrm);
     container.registerSingleton<HashProvider>(hashProviderAlias, HashProviderImpl);
+    container.registerSingleton<JwtProvider>(jwtProviderAlias, JwtProviderImpl);
   }
 }
 
