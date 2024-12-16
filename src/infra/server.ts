@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import { app } from './app';
 
-import { onListening, shutDownGracefully } from './setup';
-import { PM2 } from '../core/PM2';
 import { Environment } from '../core/Enviroment';
+import { PM2 } from '../core/PM2';
 import { Database } from '../database/Database';
+import { onListening, shutDownGracefully } from './setup';
 
 (async () => {
 	await Database.initialize();
