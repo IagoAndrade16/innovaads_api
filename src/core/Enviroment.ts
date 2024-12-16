@@ -15,6 +15,9 @@ export class Environment {
 		MYSQL_PASS: yup.string().required(),
 
 		DB_LOGGING: yup.boolean().required(),
+
+		JWT_EXPIRES_IN_SECONDS: yup.number().required(),
+		JWT_SECRET_KEY: yup.string().required(),
   });
 
   static vars: InferType<typeof Environment.varsSchema>;

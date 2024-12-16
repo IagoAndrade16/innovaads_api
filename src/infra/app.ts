@@ -4,8 +4,8 @@ import express from 'express';
 import 'express-async-errors';
 import { DependencyInjection } from '../core/DependencyInjection';
 import { Environment } from '../core/Enviroment';
+import { appRouter } from './routes/router';
 import { handleErrors } from './middlewares/handleErrors';
-
 
 
 const app = express();
@@ -21,8 +21,9 @@ app.use(express.json({ limit: '30mb' }));
 app.use(express.static('public'));
 
 // app.use(rateLimiter);
-// app.use(appRouter);
+app.use(appRouter);
 
-app.use(handleErrors as unknown as express.ErrorRequestHandler);
+app.use(handleErrors);
+
 
 export { app };

@@ -1,34 +1,34 @@
-import { Request, Response } from 'express';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { NextFunction, Request, Response } from "express";
+import { DomainError } from "../errors/DomainError";
 import * as yup from 'yup';
+import { ValidationsUtils } from "../../core/ValidationUtils";
 
-import { ValidationsUtils } from '../../core/ValidationUtils';
-import { DomainError } from '../errors/DomainError';
 
-export function handleErrors(
-	err: Error,
-	_req: Request,
-	res: Response,
-): Response {
-	if (err instanceof DomainError) {
-		if (!err.reason) {
-			return res.status(err.statusCode).send();
-		}
+export const handleErrors = (err: Error, req: Request, res: Response, _next: NextFunction): void => {
+  if (err instanceof DomainError) {
+    if (!err.reason) {
+      res.status(err.statusCode).send();
+			return;
+    }
 
-		return res.status(err.statusCode).json({
+    res.status(err.statusCode).send({
 			result: 'ERROR',
 			reason: err.reason,
 			data: err.data,
 		});
-	}
+		return;
+  }
 
-	if (err instanceof yup.ValidationError) {
+  if (err instanceof yup.ValidationError) {
 		const yupErrors = ValidationsUtils.formatYupErrors(err);
-		return res.status(400).json(yupErrors);
+		res.status(400).send(yupErrors);
+		return;
 	}
 
 	console.log(err);
 
-	return res.status(500).json({
+	res.status(500).send({
 		message: 'Internal server error',
 	});
 }
