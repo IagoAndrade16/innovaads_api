@@ -18,6 +18,12 @@ export class Environment {
 
 		JWT_EXPIRES_IN_SECONDS: yup.number().required(),
 		JWT_SECRET_KEY: yup.string().required(),
+
+		BREVO_BASE_URL: yup.string().required(),
+		BREVO_API_KEY: yup.string().required(),
+
+		INNOVAADS_NAME: yup.string().required(),
+		INNOVAADS_EMAIL: yup.string().required(),
   });
 
   static vars: InferType<typeof Environment.varsSchema>;
