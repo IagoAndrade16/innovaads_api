@@ -14,6 +14,10 @@ export class UsersRepositoryTypeOrm implements UsersRepository {
     return user;
   }
 
+  async findById(id: string): Promise<User | null> {
+    return this.repository.findOneBy({ id });
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     return this.repository.findOneBy({ email });
   }

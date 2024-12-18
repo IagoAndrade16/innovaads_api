@@ -11,6 +11,10 @@ import { EmailSenderProvider, emailSenderProviderAlias } from "../providers/mail
 import { EmailSenderProviderImpl } from "../providers/mail/implementations/EmailSenderProviderImpl";
 import { TemplaterProvider, templaterProviderAlias } from "../providers/templater/TemplaterProvider";
 import { TemplaterHandlebarsImpl } from "../providers/templater/implementations/TemplaterHandlebarsImpl";
+import { Users2FARepository, users2FARepositoryAlias } from "../domain/users/repositories/Users2FARepository";
+import { Users2FARepositoryTypeOrm } from "../domain/users/repositories/implementations/Users2FARepositoryTypeOrm";
+import { RandomProvider, randomProviderAlias } from "../providers/random/RandomProvider";
+import { RandomProviderImpl } from "../providers/random/implementations/RandomProviderImpl";
 
 export class DependencyInjection {
   static init(): void {
@@ -19,7 +23,9 @@ export class DependencyInjection {
     container.registerSingleton<JwtProvider>(jwtProviderAlias, JwtProviderImpl);
     container.registerSingleton<ApiProviderAxios>(apiProviderAxiosAlias, ApiProviderAxiosImpl);
     container.registerSingleton<EmailSenderProvider>(emailSenderProviderAlias, EmailSenderProviderImpl);
-    container.registerSingleton<TemplaterProvider>(templaterProviderAlias, TemplaterHandlebarsImpl)
+    container.registerSingleton<TemplaterProvider>(templaterProviderAlias, TemplaterHandlebarsImpl);
+    container.registerSingleton<Users2FARepository>(users2FARepositoryAlias, Users2FARepositoryTypeOrm);
+    container.registerSingleton<RandomProvider>(randomProviderAlias, RandomProviderImpl);
   }
 }
 
