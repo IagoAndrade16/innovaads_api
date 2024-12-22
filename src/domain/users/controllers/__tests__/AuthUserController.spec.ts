@@ -3,7 +3,6 @@ import request from 'supertest';
 import { app } from "../../../../infra/app";
 import { find } from '../../../../core/DependencyInjection';
 import { AuthUserUseCase } from '../../usecases/AuthUserUseCase';
-import { describe, expect, it, vi } from 'vitest';
 import { v4 as uuidv4 } from 'uuid';
 
 const route = '/users/auth';
@@ -21,7 +20,7 @@ describe('Schema validation', () => {
 
 
 it('should call usecase with correct params', async () => {
-  vi.spyOn(usecase, 'execute').mockResolvedValue({ token: uuidv4() });
+  jest.spyOn(usecase, 'execute').mockResolvedValue({ token: uuidv4() });
 
   const response = await request(app).post(route).send({
     email: 'test@email.com',

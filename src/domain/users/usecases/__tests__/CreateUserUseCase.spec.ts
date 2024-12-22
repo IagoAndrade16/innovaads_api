@@ -3,13 +3,12 @@ import { DomainError } from "../../../../infra/errors/DomainError";
 import { User } from "../../entities/User";
 import { UsersRepository, usersRepositoryAlias } from "../../repositories/UsersRepository";
 import { CreateUserUseCase } from "../CreateUserUseCase";
-import { expect, it, vi } from 'vitest'
 
 const usecase = find(CreateUserUseCase);
 const usersRepository = find<UsersRepository>(usersRepositoryAlias);
 
 it('should throw USER_FOUND if user already exists', async () => {
-  vi.spyOn(usersRepository, 'findByEmail').mockResolvedValue({ id: 'adsf' } as User);
+  jest.spyOn(usersRepository, 'findByEmail').mockResolvedValue({ id: 'adsf' } as User);
 
   await expect(usecase.execute({
     name: 'John Doe',
@@ -23,8 +22,8 @@ it('should throw USER_FOUND if user already exists', async () => {
 });
 
 it('should create a user', async () => {
-  vi.spyOn(usersRepository, 'findByEmail').mockResolvedValue(null);
-  vi.spyOn(usersRepository, 'insert').mockResolvedValue({ id: 'ehw' } as User);
+  jest.spyOn(usersRepository, 'findByEmail').mockResolvedValue(null);
+  jest.spyOn(usersRepository, 'insert').mockResolvedValue({ id: 'ehw' } as User);
 
   await usecase.execute({
     name: 'John Doe',
