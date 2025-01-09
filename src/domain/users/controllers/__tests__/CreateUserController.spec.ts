@@ -1,7 +1,6 @@
 import request from 'supertest';
 import { find } from '../../../../core/DependencyInjection';
 import { CreateUserUseCase } from '../../usecases/CreateUserUseCase';
-import { describe, expect, it, vi } from 'vitest';
 import { app } from '../../../../infra/app';
 
 const route = '/users';
@@ -20,7 +19,7 @@ describe('Schema Validation', () => {
 })
 
 it('should call usecase', async () => {
-  vi.spyOn(usecase, 'execute').mockResolvedValue();
+  jest.spyOn(usecase, 'execute').mockResolvedValue();
 
   const res = await request(app).post(route).send({
     name: 'John Doe',

@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import { expect, it, vi } from "vitest";
 import { find } from "../../../../core/DependencyInjection";
 import { UnauthorizedError } from "../../../../infra/errors/Unauthorized";
 import { HashProvider, hashProviderAlias } from "../../../../providers/hash/HashProvider";
@@ -13,7 +12,7 @@ const hashProvider = find<HashProvider>(hashProviderAlias);
 
 
 it('should throw INVALID_CREDENTIALS if email is not found', async () => {
-  vi.spyOn(usersRepository, 'findByEmail').mockResolvedValue(null);
+  jest.spyOn(usersRepository, 'findByEmail').mockResolvedValue(null);
 
   await expect(usecase.execute({
     email: 'test@email.com',
@@ -25,8 +24,8 @@ it('should throw INVALID_CREDENTIALS if email is not found', async () => {
 });
 
 it('should throw INVALID_CREDENTIALS if password does not match', async () => {
-  vi.spyOn(usersRepository, 'findByEmail').mockResolvedValue({ id: uuidv4() } as User);
-  vi.spyOn(hashProvider, 'compareHash').mockResolvedValue(false);
+  jest.spyOn(usersRepository, 'findByEmail').mockResolvedValue({ id: uuidv4() } as User);
+  jest.spyOn(hashProvider, 'compareHash').mockResolvedValue(false);
 
   await expect(usecase.execute({
     email: 'test@email.com',
@@ -41,9 +40,9 @@ it('should throw INVALID_CREDENTIALS if password does not match', async () => {
 });
 
 it('should return a token if credentials are valid', async () => {
-  vi.spyOn(usersRepository, 'findByEmail').mockResolvedValue({ id: uuidv4(), password: uuidv4() } as User);
-  vi.spyOn(hashProvider, 'compareHash').mockResolvedValue(true);
-  vi.spyOn(User, 'generateUserToken').mockResolvedValue(uuidv4());
+  jest.spyOn(usersRepository, 'findByEmail').mockResolvedValue({ id: uuidv4(), password: uuidv4() } as User);
+  jest.spyOn(hashProvider, 'compareHash').mockResolvedValue(true);
+  jest.spyOn(User, 'generateUserToken').mockResolvedValue(uuidv4());
 
   const res = await usecase.execute({
     email: 'test@email.com',
