@@ -10,6 +10,10 @@ beforeAll(async () => {
   await Database.initialize();
 });
 
+afterAll(async () => {
+  await Database.close();
+});
+
 describe('insert', () => {
   it('should insert a new user', async () => {
     const user = await usersRepository.insert({
@@ -23,8 +27,4 @@ describe('insert', () => {
   
     expect(user).not.toBeNull();
   })
-});
-
-afterAll(async () => {
-  await Database.close();
 });

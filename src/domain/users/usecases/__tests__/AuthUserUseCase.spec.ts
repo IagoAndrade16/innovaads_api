@@ -1,11 +1,11 @@
+import { v4 as uuidv4 } from 'uuid';
 import { expect, it, vi } from "vitest";
 import { find } from "../../../../core/DependencyInjection";
+import { UnauthorizedError } from "../../../../infra/errors/Unauthorized";
 import { HashProvider, hashProviderAlias } from "../../../../providers/hash/HashProvider";
+import { User } from "../../entities/User";
 import { UsersRepository, usersRepositoryAlias } from "../../repositories/UsersRepository";
 import { AuthUserUseCase } from "../AuthUserUseCase";
-import { DomainError } from "../../../../infra/errors/DomainError";
-import { User } from "../../entities/User";
-import { v4 as uuidv4 } from 'uuid';
 
 const usecase = find(AuthUserUseCase);
 const usersRepository = find<UsersRepository>(usersRepositoryAlias);
@@ -18,7 +18,7 @@ it('should throw INVALID_CREDENTIALS if email is not found', async () => {
   await expect(usecase.execute({
     email: 'test@email.com',
     password: '123456',
-  })).rejects.toMatchObject(new DomainError(400, 'INVALID_CREDENTIALS'));
+  })).rejects.toMatchObject(new UnauthorizedError('INVALID_CREDENTIALS'));
 
   expect(usersRepository.findByEmail).toBeCalledTimes(1);
   expect(usersRepository.findByEmail).toBeCalledWith('test@email.com');
@@ -31,7 +31,7 @@ it('should throw INVALID_CREDENTIALS if password does not match', async () => {
   await expect(usecase.execute({
     email: 'test@email.com',
     password: '123456',
-  })).rejects.toMatchObject(new DomainError(400, 'INVALID_CREDENTIALS'));
+  })).rejects.toMatchObject(new UnauthorizedError('INVALID_CREDENTIALS'));
 
   expect(usersRepository.findByEmail).toBeCalledTimes(1);
   expect(usersRepository.findByEmail).toBeCalledWith('test@email.com');
@@ -59,5 +59,5 @@ it('should return a token if credentials are valid', async () => {
   expect(User.generateUserToken).toBeCalledTimes(1);
   expect(User.generateUserToken).toBeCalledWith({ id: expect.any(String) });
 
-  expect(res).toMatchObject({ token: expect.any(String) });
+  expect(res).toMatchObject({ auth: { token: expect.any(String) } });
 });

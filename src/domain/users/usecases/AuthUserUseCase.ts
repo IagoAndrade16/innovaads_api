@@ -1,9 +1,9 @@
 import { inject, singleton } from "tsyringe";
 import { UseCase } from "../../../core/UseCase";
-import { UsersRepository, usersRepositoryAlias } from "../repositories/UsersRepository";
-import { DomainError } from "../../../infra/errors/DomainError";
+import { UnauthorizedError } from "../../../infra/errors/Unauthorized";
 import { HashProvider, hashProviderAlias } from "../../../providers/hash/HashProvider";
 import { User } from "../entities/User";
+import { UsersRepository, usersRepositoryAlias } from "../repositories/UsersRepository";
 
 export type AuthUserUseCaseInput = {
   email: string;
@@ -11,7 +11,10 @@ export type AuthUserUseCaseInput = {
 }
 
 export type AuthUserUseCaseOutput = {
-  token: string;
+  auth: {
+    token: string;
+  };
+  name: string;
 }
 
 @singleton()
@@ -28,19 +31,22 @@ export class AuthUserUseCase implements UseCase<AuthUserUseCaseInput, AuthUserUs
     const user = await this.usersRepository.findByEmail(input.email);
 
     if (!user) {
-      throw new DomainError(400, 'INVALID_CREDENTIALS');
+      throw new UnauthorizedError('INVALID_CREDENTIALS');
     }
 
     const passwordMatch = await this.hashProvider.compareHash(input.password, user.password);
 
     if (!passwordMatch) {
-      throw new DomainError(400, 'INVALID_CREDENTIALS');
+      throw new UnauthorizedError('INVALID_CREDENTIALS');
     }
 
     const token = await User.generateUserToken({ id: user.id });
 
     return {
-      token,
+      auth: {
+        token,
+      },
+      name: user.name,
     }
   }
 }

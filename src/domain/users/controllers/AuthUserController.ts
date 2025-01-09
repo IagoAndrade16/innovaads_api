@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { Controller } from "../../../core/Controller";
-import * as yup from 'yup';
 import { inject, injectable } from "tsyringe";
+import { Controller } from "../../../core/Controller";
+import { Utils } from "../../../core/Utils";
 import { AuthUserUseCase } from "../usecases/AuthUserUseCase";
+import { UnauthorizedError } from "../../../infra/errors/Unauthorized";
 
 @injectable()
 export class AuthUserController implements Controller {
@@ -11,20 +12,18 @@ export class AuthUserController implements Controller {
     private readonly authUserUseCase: AuthUserUseCase,
   ) {}
 
-  private bodySchema = yup.object().shape({
-    email: yup.string().email().required(),
-    password: yup.string().required(),
-  });
-
   async handle(req: Request, res: Response): Promise<void> {
-    const body = await this.bodySchema.validate(req.body, { abortEarly: false });
+		const [email, password] = Utils.getBasicAuthContentFromReq(req);
+
+    if(!email || !password) {
+      throw new UnauthorizedError('INVALID_CREDENTIALS');
+    }
 
     const result = await this.authUserUseCase.execute({
-      ...body,
+      email,
+      password,
     });
 
-    res.status(200).send({
-      result,
-    });
+    res.status(200).send(result);
   }
 }
