@@ -24,6 +24,8 @@ export class Environment {
 
 		INNOVAADS_NAME: yup.string().required(),
 		INNOVAADS_EMAIL: yup.string().required(),
+
+		GEOCODING_API_URL: yup.string().required(),
   });
 
   static vars: InferType<typeof Environment.varsSchema>;
