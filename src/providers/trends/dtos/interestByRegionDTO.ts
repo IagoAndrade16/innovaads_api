@@ -1,5 +1,6 @@
 export type InterestByRegionInput = {
   keyword: string[];
+  resolution: ResolutionInterestByRegion;
   startTime?: Date;
   endTime?: Date;
   geo?: string[];
@@ -15,11 +16,18 @@ export type InterestByRegionOutput = {
 }
 
 export type GeoMapData = {
-  coordinates: {
+  coordinates?: {
     lat: number;
     lng: number;
   },
   geoName: string;
   value: number[];
   maxValueIndex: number;
+}
+
+export enum ResolutionInterestByRegion {
+  CITY = 'CITY',
+  COUNTRY = 'COUNTRY',
+  REGION = 'REGION',
+  DMA = 'DMA'
 }

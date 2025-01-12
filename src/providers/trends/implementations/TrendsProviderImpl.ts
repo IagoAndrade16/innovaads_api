@@ -41,6 +41,7 @@ export class TrendsProviderImpl implements TrendsProvider {
       hl: input.hl,
       timezone: input.timezone,
       category: input.category,
+      resolution: input.resolution,
     });
 
     return JSON.parse(interestByRegionRes);
