@@ -15,6 +15,7 @@ export type AuthUserUseCaseOutput = {
     token: string;
   };
   name: string;
+  email: string;
 }
 
 @singleton()
@@ -47,6 +48,7 @@ export class AuthUserUseCase implements UseCase<AuthUserUseCaseInput, AuthUserUs
         token,
       },
       name: user.name,
+      email: user.email
     }
   }
 }
