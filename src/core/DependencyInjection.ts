@@ -19,6 +19,10 @@ import { TrendsProvider, trendsProviderAlias } from "../providers/trends/TrendsP
 import { TrendsProviderImpl } from "../providers/trends/implementations/TrendsProviderImpl";
 import { geoCodingAlias, GeoCodingProvider } from "../providers/geocoding/GeoCodingProvider";
 import { GeoCodingProviderImpl } from "../providers/geocoding/implementations/GeoCodingProviderImpl";
+import { PackageDetailsRepository, packageDetailsRepositoryAlias } from "../domain/repositories/PackageDetailsRepository";
+import { PackageDetailsRespositoryTypeOrm } from "../domain/repositories/implementations/PackageDetailsRepositoryTypeOrm";
+import { PackagesRepository, packagesRepositoryAlias } from "../domain/repositories/PackagesRepository";
+import { PackagesRespositoryTypeOrm } from "../domain/repositories/implementations/PackagesRepositoryTypeOrm";
 
 export class DependencyInjection {
   static init(): void {
@@ -32,6 +36,8 @@ export class DependencyInjection {
     container.registerSingleton<RandomProvider>(randomProviderAlias, RandomProviderImpl);
     container.registerSingleton<TrendsProvider>(trendsProviderAlias, TrendsProviderImpl);
     container.registerSingleton<GeoCodingProvider>(geoCodingAlias, GeoCodingProviderImpl);
+    container.registerSingleton<PackagesRepository>(packagesRepositoryAlias, PackagesRespositoryTypeOrm);
+    container.registerSingleton<PackageDetailsRepository>(packageDetailsRepositoryAlias, PackageDetailsRespositoryTypeOrm);
   }
 }
 
