@@ -15,6 +15,10 @@ import { Users2FARepository, users2FARepositoryAlias } from "../domain/users/rep
 import { Users2FARepositoryTypeOrm } from "../domain/users/repositories/implementations/Users2FARepositoryTypeOrm";
 import { RandomProvider, randomProviderAlias } from "../providers/random/RandomProvider";
 import { RandomProviderImpl } from "../providers/random/implementations/RandomProviderImpl";
+import { TrendsProvider, trendsProviderAlias } from "../providers/trends/TrendsProvider";
+import { TrendsProviderImpl } from "../providers/trends/implementations/TrendsProviderImpl";
+import { geoCodingAlias, GeoCodingProvider } from "../providers/geocoding/GeoCodingProvider";
+import { GeoCodingProviderImpl } from "../providers/geocoding/implementations/GeoCodingProviderImpl";
 
 export class DependencyInjection {
   static init(): void {
@@ -26,6 +30,8 @@ export class DependencyInjection {
     container.registerSingleton<TemplaterProvider>(templaterProviderAlias, TemplaterHandlebarsImpl);
     container.registerSingleton<Users2FARepository>(users2FARepositoryAlias, Users2FARepositoryTypeOrm);
     container.registerSingleton<RandomProvider>(randomProviderAlias, RandomProviderImpl);
+    container.registerSingleton<TrendsProvider>(trendsProviderAlias, TrendsProviderImpl);
+    container.registerSingleton<GeoCodingProvider>(geoCodingAlias, GeoCodingProviderImpl);
   }
 }
 

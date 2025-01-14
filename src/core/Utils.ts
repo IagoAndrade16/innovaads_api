@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request } from 'express';
 import moment from 'moment';
+import { JsObject } from '../@types/JsObject';
 
 export class Utils {
 	static waitAllToArray<T>(promises: Promise<T>[]): Promise<T[]> {
@@ -129,5 +130,13 @@ export class Utils {
 		const strWithoutSpecials = strWithoutAccents.replace(/[^\w\s]/gi, '');
 
 		return strWithoutSpecials;
+	}
+
+	public static buildQueryParams(data: JsObject): string {
+		if (!data || Object.keys(data).length === 0) {
+			return '';
+		}
+
+		return Object.keys(data).map((key) => `${key}=${data[key]}`).join('&');
 	}
 }

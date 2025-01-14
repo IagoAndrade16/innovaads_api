@@ -1,10 +1,12 @@
+/* eslint-disable */
+
 import axios from "axios";
 import { JsObject } from "../../../@types/JsObject";
 import { ApiProviderAxios } from "../ApiProviderAxios";
 
 export type ApiResponse = {
   statusCode: number;
-  data: JsObject;
+  data: any;
 }
 
 export class ApiProviderAxiosImpl implements ApiProviderAxios {
