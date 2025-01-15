@@ -1,10 +1,9 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
-
-
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Package } from "./Package";
 
 @Entity('package_details')
 export class PackageDetails {
-  @PrimaryColumn({ type: 'uuid', length: 100 })
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
@@ -24,4 +23,10 @@ export class PackageDetails {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', nullable: false, onUpdate: 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  @ManyToOne(() => Package, (packageEntity) => packageEntity.details, {
+    onDelete: 'CASCADE',
+    nullable: false,
+  })
+  package: Package;
 }

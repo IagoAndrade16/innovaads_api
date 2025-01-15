@@ -20,7 +20,7 @@ describe('insert', () => {
       name: 'test',
       password: 'test',
       phone: 'test'
-    })
+    });
 
     await Database.source.getRepository(User).delete(user.id);
   
