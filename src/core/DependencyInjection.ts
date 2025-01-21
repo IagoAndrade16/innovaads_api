@@ -1,6 +1,6 @@
 import { container, InjectionToken } from "tsyringe";
-import { UsersRepository, usersRepositoryAlias } from "../domain/users/repositories/UsersRepository";
-import { UsersRepositoryTypeOrm } from "../domain/users/repositories/implementations/UsersRepositoryTypeOrm";
+import { UsersRepository, usersRepositoryAlias } from "../domain/modules/users/repositories/UsersRepository";
+import { UsersRepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/UsersRepositoryTypeOrm";
 import { HashProvider, hashProviderAlias } from "../providers/hash/HashProvider";
 import { HashProviderImpl } from "../providers/hash/implementations/HashProviderImpl";
 import { JwtProvider, jwtProviderAlias } from "../providers/jwt/JwtProvider";
@@ -11,8 +11,8 @@ import { EmailSenderProvider, emailSenderProviderAlias } from "../providers/mail
 import { EmailSenderProviderImpl } from "../providers/mail/implementations/EmailSenderProviderImpl";
 import { TemplaterProvider, templaterProviderAlias } from "../providers/templater/TemplaterProvider";
 import { TemplaterHandlebarsImpl } from "../providers/templater/implementations/TemplaterHandlebarsImpl";
-import { Users2FARepository, users2FARepositoryAlias } from "../domain/users/repositories/Users2FARepository";
-import { Users2FARepositoryTypeOrm } from "../domain/users/repositories/implementations/Users2FARepositoryTypeOrm";
+import { Users2FARepository, users2FARepositoryAlias } from "../domain/modules/users/repositories/Users2FARepository";
+import { Users2FARepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/Users2FARepositoryTypeOrm";
 import { RandomProvider, randomProviderAlias } from "../providers/random/RandomProvider";
 import { RandomProviderImpl } from "../providers/random/implementations/RandomProviderImpl";
 import { TrendsProvider, trendsProviderAlias } from "../providers/trends/TrendsProvider";
