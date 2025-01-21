@@ -4,8 +4,8 @@ import express from 'express';
 import 'express-async-errors';
 import { DependencyInjection } from '../core/DependencyInjection';
 import { Environment } from '../core/Enviroment';
-import { appRouter } from './routes/router';
-import { handleErrors } from './middlewares/handleErrors';
+import { appRouter } from './http/routes/router';
+import { handleErrors } from './http/middlewares/handleErrors';
 
 
 const app = express();

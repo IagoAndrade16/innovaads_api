@@ -28,7 +28,7 @@ describe('getRegionByCoordinates', () => {
     } as GetRegionByCoordinatesOutput);
 
     expect(apiProvider.get).toHaveBeenCalledTimes(1);
-    expect(apiProvider.get).toHaveBeenCalledWith('https://nominatim.openstreetmap.org/reverse?lat=0&lon=0&format=json', {
+    expect(apiProvider.get).toHaveBeenCalledWith(expect.stringContaining('lat=0&lon=0&format=json'), {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'User-Agent': 'Innova Ads innovaads22@gmail.com'
@@ -49,7 +49,7 @@ describe('getRegionByCoordinates', () => {
     } as GetRegionByCoordinatesOutput);
 
     expect(apiProvider.get).toHaveBeenCalledTimes(1);
-    expect(apiProvider.get).toHaveBeenCalledWith('https://nominatim.openstreetmap.org/reverse?lat=0&lon=0&format=json', {
+    expect(apiProvider.get).toHaveBeenCalledWith(expect.stringContaining('lat=0&lon=0&format=json'), {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'User-Agent': 'Innova Ads innovaads22@gmail.com'

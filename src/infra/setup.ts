@@ -1,8 +1,7 @@
 import * as http from 'http';
 
 import { PM2 } from '../core/PM2';
-import { Database } from '../database/Database';
-
+import { Database } from './database/Database';
 
 export async function onListening() {
 	PM2.emitReady();

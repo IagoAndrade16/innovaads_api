@@ -1,6 +1,6 @@
 import { container, InjectionToken } from "tsyringe";
-import { UsersRepository, usersRepositoryAlias } from "../domain/users/repositories/UsersRepository";
-import { UsersRepositoryTypeOrm } from "../domain/users/repositories/implementations/UsersRepositoryTypeOrm";
+import { UsersRepository, usersRepositoryAlias } from "../domain/modules/users/repositories/UsersRepository";
+import { UsersRepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/UsersRepositoryTypeOrm";
 import { HashProvider, hashProviderAlias } from "../providers/hash/HashProvider";
 import { HashProviderImpl } from "../providers/hash/implementations/HashProviderImpl";
 import { JwtProvider, jwtProviderAlias } from "../providers/jwt/JwtProvider";
@@ -11,18 +11,18 @@ import { EmailSenderProvider, emailSenderProviderAlias } from "../providers/mail
 import { EmailSenderProviderImpl } from "../providers/mail/implementations/EmailSenderProviderImpl";
 import { TemplaterProvider, templaterProviderAlias } from "../providers/templater/TemplaterProvider";
 import { TemplaterHandlebarsImpl } from "../providers/templater/implementations/TemplaterHandlebarsImpl";
-import { Users2FARepository, users2FARepositoryAlias } from "../domain/users/repositories/Users2FARepository";
-import { Users2FARepositoryTypeOrm } from "../domain/users/repositories/implementations/Users2FARepositoryTypeOrm";
+import { Users2FARepository, users2FARepositoryAlias } from "../domain/modules/users/repositories/Users2FARepository";
+import { Users2FARepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/Users2FARepositoryTypeOrm";
 import { RandomProvider, randomProviderAlias } from "../providers/random/RandomProvider";
 import { RandomProviderImpl } from "../providers/random/implementations/RandomProviderImpl";
 import { TrendsProvider, trendsProviderAlias } from "../providers/trends/TrendsProvider";
 import { TrendsProviderImpl } from "../providers/trends/implementations/TrendsProviderImpl";
 import { geoCodingAlias, GeoCodingProvider } from "../providers/geocoding/GeoCodingProvider";
 import { GeoCodingProviderImpl } from "../providers/geocoding/implementations/GeoCodingProviderImpl";
-import { PackageDetailsRepository, packageDetailsRepositoryAlias } from "../domain/packages/repositories/PackageDetailsRepository";
-import { PackageDetailsRespositoryTypeOrm } from "../domain/packages/repositories/implementations/PackageDetailsRepositoryTypeOrm";
-import { PackagesRepository, packagesRepositoryAlias } from "../domain/packages/repositories/PackagesRepository";
-import { PackagesRespositoryTypeOrm } from "../domain/packages/repositories/implementations/PackagesRepositoryTypeOrm";
+import { PackageDetailsRepository, packageDetailsRepositoryAlias } from "../domain/modules/packages/repositories/PackageDetailsRepository";
+import { PackageDetailsRespositoryTypeOrm } from "../infra/database/typeorm/repositories/packages/PackageDetailsRepositoryTypeOrm";
+import { PackagesRepository, packagesRepositoryAlias } from "../domain/modules/packages/repositories/PackagesRepository";
+import { PackagesRespositoryTypeOrm } from "../infra/database/typeorm/repositories/packages/PackagesRepositoryTypeOrm";
 
 export class DependencyInjection {
   static init(): void {
