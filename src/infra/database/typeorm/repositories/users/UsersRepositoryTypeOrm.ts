@@ -2,7 +2,8 @@
 import { UniqueEntityID } from "../../../../../domain/entities/UniqueEntityID";
 import { User } from "../../../../../domain/modules/users/entities/User";
 import { InsertUserDTO, UpdateUserDTO, UsersRepository } from "../../../../../domain/modules/users/repositories/UsersRepository";
-import { Database } from "../../Database";
+import { Database } from "../../../Database";
+
 
 
 export class UsersRepositoryTypeOrm implements UsersRepository {

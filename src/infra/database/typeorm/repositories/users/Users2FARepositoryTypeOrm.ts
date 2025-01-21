@@ -2,7 +2,8 @@
 import { UniqueEntityID } from "../../../../../domain/entities/UniqueEntityID";
 import { User2FA } from "../../../../../domain/modules/users/entities/User2FA";
 import { InsertUsers2FADTO, UpdateUsers2FADTO, Users2FARepository } from "../../../../../domain/modules/users/repositories/Users2FARepository";
-import { Database } from "../../Database";
+import { Database } from "../../../Database";
+
 
 
 

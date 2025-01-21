@@ -2,7 +2,8 @@ import { find } from "../../../../../../core/DependencyInjection";
 import { UniqueEntityID } from "../../../../../../domain/entities/UniqueEntityID";
 import { User } from "../../../../../../domain/modules/users/entities/User";
 import { UsersRepository, usersRepositoryAlias } from "../../../../../../domain/modules/users/repositories/UsersRepository";
-import { Database } from "../../../Database";
+import { Database } from "../../../../Database";
+
 
 const usersRepository = find<UsersRepository>(usersRepositoryAlias);
 

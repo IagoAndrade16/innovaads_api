@@ -3,7 +3,8 @@ import { Utils } from "../../../../../../core/Utils";
 import { UniqueEntityID } from "../../../../../../domain/entities/UniqueEntityID";
 import { User2FA } from "../../../../../../domain/modules/users/entities/User2FA";
 import { Users2FARepository, users2FARepositoryAlias } from "../../../../../../domain/modules/users/repositories/Users2FARepository";
-import { Database } from "../../../Database";
+import { Database } from "../../../../Database";
+
 
 
 const repository = find<Users2FARepository>(users2FARepositoryAlias);

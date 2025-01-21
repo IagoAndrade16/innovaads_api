@@ -1,6 +1,7 @@
 import { DataSource } from "typeorm";
+
+import { Environment } from "../../core/Enviroment";
 import { datasource } from "./source";
-import { Environment } from "../../../core/Enviroment";
 
 
 export class Database {
