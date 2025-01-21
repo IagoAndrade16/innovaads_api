@@ -1,7 +1,8 @@
-import { Database } from "../../../../database/Database";
-import { PackageDetails } from "../../entities/PackageDetails";
-import { PackageDetailsInput } from "../@types/packageDetails";
-import { PackageDetailsRepository } from "../PackageDetailsRepository";
+
+import { Database } from "../../../Database";
+import { PackageDetails } from "../../../../../domain/modules/packages/entities/PackageDetails";
+import { PackageDetailsInput } from "../../../../../domain/modules/packages/repositories/@types/packageDetails";
+import { PackageDetailsRepository } from "../../../../../domain/modules/packages/repositories/PackageDetailsRepository";
 
 
 export class PackageDetailsRespositoryTypeOrm implements PackageDetailsRepository {

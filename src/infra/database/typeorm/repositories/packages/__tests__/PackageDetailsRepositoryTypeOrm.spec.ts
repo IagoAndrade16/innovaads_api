@@ -1,11 +1,12 @@
-import { find } from "../../../../core/DependencyInjection";
-import { Database } from "../../../../database/Database";
-import { Package } from "../../entities/Package";
-import { PackageDetails } from "../../entities/PackageDetails";
-import { PackageDetailsInput } from "../@types/packageDetails";
-import { PackageInsertInput } from "../@types/packages";
-import { PackageDetailsRepository, packageDetailsRepositoryAlias } from "../PackageDetailsRepository";
-import { PackagesRepository, packagesRepositoryAlias } from "../PackagesRepository";
+import { find } from "../../../../../../core/DependencyInjection";
+import { Database } from "../../../../Database";
+
+import { Package } from "../../../../../../domain/modules/packages/entities/Package";
+import { PackageDetails } from "../../../../../../domain/modules/packages/entities/PackageDetails";
+import { PackageDetailsInput } from "../../../../../../domain/modules/packages/repositories/@types/packageDetails";
+import { PackageInsertInput } from "../../../../../../domain/modules/packages/repositories/@types/packages";
+import { PackageDetailsRepository, packageDetailsRepositoryAlias } from "../../../../../../domain/modules/packages/repositories/PackageDetailsRepository";
+import { PackagesRepository, packagesRepositoryAlias } from "../../../../../../domain/modules/packages/repositories/PackagesRepository";
 
 const packageDetailsRepository = find<PackageDetailsRepository>(packageDetailsRepositoryAlias);
 const packagesRepository = find<PackagesRepository>(packagesRepositoryAlias);

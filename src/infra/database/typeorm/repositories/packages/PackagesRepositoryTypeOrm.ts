@@ -1,8 +1,9 @@
-import { Database } from "../../../../database/Database";
-import { Package } from "../../entities/Package";
-import { PackageDetails } from "../../entities/PackageDetails";
-import { PackageInsertInput } from "../@types/packages";
-import { PackagesRepository } from "../PackagesRepository";
+
+import { Database } from "../../../Database";
+import { Package } from "../../../../../domain/modules/packages/entities/Package";
+import { PackageDetails } from "../../../../../domain/modules/packages/entities/PackageDetails";
+import { PackageInsertInput } from "../../../../../domain/modules/packages/repositories/@types/packages";
+import { PackagesRepository } from "../../../../../domain/modules/packages/repositories/PackagesRepository";
 
 
 export class PackagesRespositoryTypeOrm implements PackagesRepository {

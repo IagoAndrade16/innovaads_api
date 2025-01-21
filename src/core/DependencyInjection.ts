@@ -19,10 +19,10 @@ import { TrendsProvider, trendsProviderAlias } from "../providers/trends/TrendsP
 import { TrendsProviderImpl } from "../providers/trends/implementations/TrendsProviderImpl";
 import { geoCodingAlias, GeoCodingProvider } from "../providers/geocoding/GeoCodingProvider";
 import { GeoCodingProviderImpl } from "../providers/geocoding/implementations/GeoCodingProviderImpl";
-import { PackageDetailsRepository, packageDetailsRepositoryAlias } from "../domain/packages/repositories/PackageDetailsRepository";
-import { PackageDetailsRespositoryTypeOrm } from "../domain/packages/repositories/implementations/PackageDetailsRepositoryTypeOrm";
-import { PackagesRepository, packagesRepositoryAlias } from "../domain/packages/repositories/PackagesRepository";
-import { PackagesRespositoryTypeOrm } from "../domain/packages/repositories/implementations/PackagesRepositoryTypeOrm";
+import { PackageDetailsRepository, packageDetailsRepositoryAlias } from "../domain/modules/packages/repositories/PackageDetailsRepository";
+import { PackageDetailsRespositoryTypeOrm } from "../infra/database/typeorm/repositories/packages/PackageDetailsRepositoryTypeOrm";
+import { PackagesRepository, packagesRepositoryAlias } from "../domain/modules/packages/repositories/PackagesRepository";
+import { PackagesRespositoryTypeOrm } from "../infra/database/typeorm/repositories/packages/PackagesRepositoryTypeOrm";
 
 export class DependencyInjection {
   static init(): void {

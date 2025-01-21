@@ -1,9 +1,10 @@
-import { find } from "../../../../core/DependencyInjection";
-import { Database } from "../../../../database/Database";
-import { Package } from "../../entities/Package";
-import { PackageDetails } from "../../entities/PackageDetails";
-import { PackageInsertInput } from "../@types/packages";
-import { PackagesRepository, packagesRepositoryAlias } from "../PackagesRepository";
+import { find } from "../../../../../../core/DependencyInjection";
+import { Database } from "../../../../Database";
+
+import { Package } from "../../../../../../domain/modules/packages/entities/Package";
+import { PackageDetails } from "../../../../../../domain/modules/packages/entities/PackageDetails";
+import { PackageInsertInput } from "../../../../../../domain/modules/packages/repositories/@types/packages";
+import { PackagesRepository, packagesRepositoryAlias } from "../../../../../../domain/modules/packages/repositories/PackagesRepository";
 
 const packagesRepository = find<PackagesRepository>(packagesRepositoryAlias);
 
