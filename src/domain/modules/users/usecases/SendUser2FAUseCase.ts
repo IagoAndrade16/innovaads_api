@@ -4,10 +4,11 @@ import { inject, singleton } from "tsyringe";
 import { UseCase } from "../../../../core/UseCase";
 import { UsersRepository, usersRepositoryAlias } from "../repositories/UsersRepository";
 import { Users2FARepository, users2FARepositoryAlias } from "../repositories/Users2FARepository";
-import { UserNotFound } from "../../../errors/UserNotFound";
+
 import { RandomProvider, randomProviderAlias } from "../../../../providers/random/RandomProvider";
 import { EmailSenderProvider, emailSenderProviderAlias } from "../../../../providers/mail/EmailSenderProvider";
 import { UniqueEntityID } from "../../../entities/UniqueEntityID";
+import { UserNotFoundError } from "../../../errors/UserNotFoundError";
 
 export type SendUser2FAUseCaseInput = {
   userId: UniqueEntityID;
@@ -39,7 +40,7 @@ export class SendUser2FAUseCase implements UseCase<SendUser2FAUseCaseInput, void
     const user = await this.usersRepository.findById(input.userId);
     
     if (!user) {
-      throw new UserNotFound();
+      throw new UserNotFoundError();
     }
     
     const codeGenerated = await this.randomProvider.generateRandomNumber(100000, 999999);

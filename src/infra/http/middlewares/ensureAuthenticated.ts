@@ -19,10 +19,10 @@ export const _ensureAuthenticated = async (req: Request, _res: Response, next: N
     throw new UnauthorizedError('UNAUTHORIZED');
   }
 
-  const payload = await jwtProvider.verify(tokenSplited) as { subject: string };
+  const payload = await jwtProvider.verify(tokenSplited) as { id?: string, subject?: string };
 
   req.user = {
-    id: new UniqueEntityID(payload?.subject),
+    id: new UniqueEntityID(payload?.id ?? payload?.subject),
   }
   
   next();

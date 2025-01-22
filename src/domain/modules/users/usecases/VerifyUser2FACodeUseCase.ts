@@ -2,9 +2,10 @@ import { inject, singleton } from "tsyringe";
 import { UseCase } from "../../../../core/UseCase";
 import { UsersRepository, usersRepositoryAlias } from "../repositories/UsersRepository";
 import { Users2FARepository, users2FARepositoryAlias } from "../repositories/Users2FARepository";
-import { UserNotFound } from "../../../errors/UserNotFound";
+
 import { DomainError } from "../../../errors/DomainError";
 import { UniqueEntityID } from "../../../entities/UniqueEntityID";
+import { UserNotFoundError } from "../../../errors/UserNotFoundError";
 
 export type VerifyUser2FACodeUseCaseInput = {
   code: string;
@@ -25,7 +26,7 @@ export class VerifyUser2FACodeUseCase implements UseCase<VerifyUser2FACodeUseCas
     const user = await this.usersRepository.findById(input.userId);
 
     if (!user) {
-      throw new UserNotFound();
+      throw new UserNotFoundError();
     }
 
     const user2FACode = await this.users2FARepository.findLastCodeByUserId(user.id);

@@ -19,6 +19,7 @@ export type UpdateUserDTO = {
   name?: string;
   email?: string;
   phone?: string;
+  password?: string;
 }
 
 export const usersRepositoryAlias = 'UsersRepository' as const;

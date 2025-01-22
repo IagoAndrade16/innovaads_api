@@ -6,11 +6,13 @@ import { _ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { AuthUserController } from "../controllers/users/AuthUserController";
 import { SendUser2FAController } from "../controllers/users/SendUser2FAController";
 import { VerifyUser2FACodeController } from "../controllers/users/VerifyUser2FACodeController";
+import { UpdateUserPasswordController } from "../controllers/users/UpdateUserPasswordController";
 
 export const usersRouter = Router();
 
 usersRouter.post('/', (req, res) => find(CreateUserController).handle(req, res));
 usersRouter.put('/', _ensureAuthenticated, (req, res) => find(UpdateUserController).handle(req, res));
+usersRouter.patch('/password', _ensureAuthenticated, (req, res) => find(UpdateUserPasswordController).handle(req, res));
 
 usersRouter.post('/auth', (req, res) => find(AuthUserController).handle(req, res));
 

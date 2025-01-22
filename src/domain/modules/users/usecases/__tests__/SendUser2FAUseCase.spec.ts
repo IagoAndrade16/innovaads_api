@@ -1,8 +1,9 @@
 import { find } from "../../../../../core/DependencyInjection";
-import { UserNotFound } from "../../../../errors/UserNotFound";
+
 import { EmailSenderProvider, emailSenderProviderAlias } from "../../../../../providers/mail/EmailSenderProvider";
 import { RandomProvider, randomProviderAlias } from "../../../../../providers/random/RandomProvider";
 import { UniqueEntityID } from "../../../../entities/UniqueEntityID";
+import { UserNotFoundError } from "../../../../errors/UserNotFoundError";
 import { User } from "../../entities/User";
 import { User2FA } from "../../entities/User2FA";
 import { Users2FARepository, users2FARepositoryAlias } from "../../repositories/Users2FARepository";
@@ -21,7 +22,7 @@ const userId = new UniqueEntityID();
 it('should throw an error if user not found', async () => {
   jest.spyOn(usersRepo, 'findById').mockResolvedValue(null);
 
-  await expect(usecase.execute({ userId })).rejects.toEqual(new UserNotFound());
+  await expect(usecase.execute({ userId })).rejects.toEqual(new UserNotFoundError());
 
   expect(usersRepo.findById).toHaveBeenCalledTimes(1);
   expect(usersRepo.findById).toHaveBeenCalledWith(userId);

@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { Controller } from "../../../../core/Controller";
 import { Utils } from "../../../../core/Utils";
 import { AuthUserUseCase } from "../../../../domain/modules/users/usecases/AuthUserUseCase";
+import { UnauthorizedError } from "../../../../domain/errors/Unauthorized";
 
 @injectable()
 export class AuthUserController implements Controller {
@@ -15,7 +16,7 @@ export class AuthUserController implements Controller {
 		const [email, password] = Utils.getBasicAuthContentFromReq(req);
 
     if(!email || !password) {
-      throw new Error('INVALID_CREDENTIALS');
+      throw new UnauthorizedError('INVALID_CREDENTIALS');
     }
 
     const result = await this.authUserUseCase.execute({
