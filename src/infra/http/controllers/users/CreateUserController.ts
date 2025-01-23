@@ -4,6 +4,7 @@ import { inject, injectable } from "tsyringe";
 import * as yup from 'yup';
 import { ValidationsUtils } from "../../../../core/ValidationUtils";
 import { CreateUserUseCase } from "../../../../domain/modules/users/usecases/CreateUserUseCase";
+import { PhoneNumber } from "../../../../domain/modules/users/entities/value-objects/PhoneNumber";
 
 @injectable()
 export class CreateUserController implements Controller {
@@ -16,7 +17,9 @@ export class CreateUserController implements Controller {
     name: yup.string().required(),
     email: yup.string().email().required().test('validate-email', 'Invalid email', (email) => ValidationsUtils.validateEmail(email)),
     password: yup.string().required().min(6),
-    phone: yup.string().required(),
+    phone: yup.string().required().test('phone', 'invalid-phone-number-format', (value) => {
+			return PhoneNumber.isValid(value);
+		}),
   })
 
   async handle(req: Request, res: Response): Promise<void> {

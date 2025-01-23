@@ -29,7 +29,7 @@ export class CreateUserUseCase implements UseCase<CreateUserUseCaseInput, void> 
     }
 
     const passwordHashed = await this.hashProvider.generateHash(input.password);
-
+    
     await this.usersRepository.insert({
       email: input.email,
       name: input.name,

@@ -4,6 +4,7 @@ import { inject, injectable } from "tsyringe";
 import * as yup from 'yup';
 import { ValidationsUtils } from "../../../../core/ValidationUtils";
 import { UpdateUserUseCase } from "../../../../domain/modules/users/usecases/UpdateUserUseCase";
+import { PhoneNumber } from "../../../../domain/modules/users/entities/value-objects/PhoneNumber";
 
 
 @injectable()
@@ -16,7 +17,9 @@ export class UpdateUserController implements Controller {
   private bodySchema = yup.object().shape({
     name: yup.string().optional(),
     email: yup.string().email().optional().test('validate-email', 'Invalid email', (email) => email ? ValidationsUtils.validateEmail(email) : true),
-    phone: yup.string().optional(),
+    phone: yup.string().required().test('phone', 'invalid-phone-number-format', (value) => {
+      return PhoneNumber.isValid(value);
+    }),
   })
 
   async handle(req: Request, res: Response): Promise<void> {

@@ -33,6 +33,19 @@ describe('Schema validation', () => {
       expect(res.body).toHaveProperty('email');
     })
   })
+  
+  describe('phone', () => {
+    it('should return 400 if phone is not valid', async () => {
+      const res = await request(app).post(route).send({
+        name: 'John Doe',
+        password: '123456',
+        phone: 'invalid-phone'
+      });
+      
+      expect(res.status).toBe(400);
+      expect(res.body).toHaveProperty('phone');
+    })
+  })
 })
 
 it('should call usecase and return 204', async () => {
@@ -43,7 +56,7 @@ it('should call usecase and return 204', async () => {
   .send({
     name: 'John Doe',
     email: 'test@email.com',
-    phone: '123456789'
+    phone: '24998179466'
   });  
 
   expect(res.status).toBe(204);
@@ -52,7 +65,7 @@ it('should call usecase and return 204', async () => {
   expect(usecase.execute).toHaveBeenCalledWith({
     name: 'John Doe',
     email: 'test@email.com',
-    phone: '123456789',
+    phone: '24998179466',
     userId: '-1',
   });
 })
