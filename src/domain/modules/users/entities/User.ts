@@ -47,6 +47,10 @@ export class User {
     return moment(this.createdAt).add(7, 'days').diff(moment(), 'days');
   }
 
+  get needsToBuyPlan(): boolean {
+    return !this.packageId && (this.daysRemainingForTrial <= 0 || !this.isOnTrial)
+  }
+
   static async generateUserToken(input: {
     id: string;
   }): Promise<string> {
