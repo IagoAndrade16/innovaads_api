@@ -3,7 +3,7 @@
 namespace Express {
 	export type Request = {
 		user?: {
-			id: import("../domain/entities/UniqueEntityID").UniqueEntityID;
+			id: string;
 		};
 	};
 }

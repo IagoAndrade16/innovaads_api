@@ -1,9 +1,9 @@
 import { find } from "../../../../../../core/DependencyInjection";
 import { Utils } from "../../../../../../core/Utils";
-import { UniqueEntityID } from "../../../../../../domain/entities/UniqueEntityID";
 import { User2FA } from "../../../../../../domain/modules/users/entities/User2FA";
 import { Users2FARepository, users2FARepositoryAlias } from "../../../../../../domain/modules/users/repositories/Users2FARepository";
 import { Database } from "../../../../Database";
+import { genUUID } from "../../../utils/gen-uuid";
 
 
 
@@ -19,7 +19,7 @@ afterAll(async () => {
 
 describe('insert', () => {
   it('should insert a new user 2fa', async () => {
-    const userId = new UniqueEntityID();
+    const userId = 'id';
     await repository.insert({
       userId,
       code: '123456',
@@ -35,14 +35,14 @@ describe('insert', () => {
 
 describe('findLastCodeByUserId', () => {
   it('should return null if user 2fa not found', async () => {
-    const userId = new UniqueEntityID();
+    const userId = genUUID();
     const lastCode = await repository.findLastCodeByUserId(userId);
 
     expect(lastCode).toBeNull();
   });
 
   it('should return the last code for the user 2fa', async () => {
-    const userId = new UniqueEntityID();
+    const userId = 'id';
     await repository.insert({
       userId,
       code: '1',
@@ -68,7 +68,7 @@ describe('findLastCodeByUserId', () => {
 
 describe('updateById', () => {
   it('should update a user', async () => {
-    const userId = new UniqueEntityID();
+    const userId = 'id';
     const user2fa = await repository.insert({
       userId,
       code: '123456',

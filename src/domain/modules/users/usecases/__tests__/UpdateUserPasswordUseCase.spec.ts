@@ -1,6 +1,5 @@
 import { find } from "../../../../../core/DependencyInjection";
 import { HashProvider, hashProviderAlias } from "../../../../../providers/hash/HashProvider";
-import { UniqueEntityID } from "../../../../entities/UniqueEntityID";
 import { DomainError } from "../../../../errors/DomainError";
 import { UserNotFoundError } from "../../../../errors/UserNotFoundError";
 import { User } from "../../entities/User";
@@ -12,7 +11,7 @@ const usecase = find(UpdateUserPasswordUseCase);
 const usersRepo = find<UsersRepository>(usersRepositoryAlias);
 const hashProvider = find<HashProvider>(hashProviderAlias);
 
-const userId =  new UniqueEntityID();
+const userId =  'id';
 
 it('should throw error if user not found', async () => {
   jest.spyOn(usersRepo, 'findById').mockResolvedValue(null);

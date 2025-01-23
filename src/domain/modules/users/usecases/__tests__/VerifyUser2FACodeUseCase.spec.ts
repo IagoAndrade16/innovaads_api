@@ -1,7 +1,6 @@
 import { find } from "../../../../../core/DependencyInjection";
 import { DomainError } from "../../../../errors/DomainError";
 
-import { UniqueEntityID } from "../../../../entities/UniqueEntityID";
 import { User } from "../../entities/User";
 import { User2FA } from "../../entities/User2FA";
 import { Users2FARepository, users2FARepositoryAlias } from "../../repositories/Users2FARepository";
@@ -14,7 +13,7 @@ const usecase = find(VerifyUser2FACodeUseCase);
 const usersRepo = find<UsersRepository>(usersRepositoryAlias);
 const users2FaRepo = find<Users2FARepository>(users2FARepositoryAlias);
 
-const userId = new UniqueEntityID();
+const userId = 'id';
 
 it('should throw an error if user not found', async () => {
   jest.spyOn(usersRepo, 'findById').mockResolvedValue(null);

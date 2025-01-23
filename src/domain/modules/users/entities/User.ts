@@ -1,17 +1,13 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import moment from "moment";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { find } from "../../../../core/DependencyInjection";
 import { JwtProvider, jwtProviderAlias } from "../../../../providers/jwt/JwtProvider";
-import { UniqueEntityID } from "../../../entities/UniqueEntityID";
-import { typeormIdTransformer } from "../../../../infra/database/typeorm/transformers/TypeOrmIdTransformer";
 
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  @PrimaryColumn({
-    transformer: typeormIdTransformer,
-  })
-  id: UniqueEntityID;
+  id: string;
 
   @Column({ type: 'varchar', length: 255 })
   name: string;
@@ -30,6 +26,26 @@ export class User {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  @Column({
+    type: 'varchar',
+    length: 100,
+    nullable: true,
+    default: null,
+  })
+  packageId: string | null;
+
+  get isOnTrial(): boolean {
+    return moment(this.createdAt).add(7, 'days').isAfter(moment());
+  }
+
+  get daysRemainingForTrial(): number {
+    if(!this.isOnTrial) {
+      return 0;
+    }
+
+    return moment(this.createdAt).add(7, 'days').diff(moment(), 'days');
+  }
 
   static async generateUserToken(input: {
     id: string;

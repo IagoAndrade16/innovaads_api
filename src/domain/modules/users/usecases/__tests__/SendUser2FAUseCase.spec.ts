@@ -2,7 +2,6 @@ import { find } from "../../../../../core/DependencyInjection";
 
 import { EmailSenderProvider, emailSenderProviderAlias } from "../../../../../providers/mail/EmailSenderProvider";
 import { RandomProvider, randomProviderAlias } from "../../../../../providers/random/RandomProvider";
-import { UniqueEntityID } from "../../../../entities/UniqueEntityID";
 import { UserNotFoundError } from "../../../../errors/UserNotFoundError";
 import { User } from "../../entities/User";
 import { User2FA } from "../../entities/User2FA";
@@ -17,7 +16,7 @@ const users2FaRepo = find<Users2FARepository>(users2FARepositoryAlias);
 const randomProvider = find<RandomProvider>(randomProviderAlias);
 const emailSender = find<EmailSenderProvider>(emailSenderProviderAlias);
 
-const userId = new UniqueEntityID();
+const userId = 'id';
 
 it('should throw an error if user not found', async () => {
   jest.spyOn(usersRepo, 'findById').mockResolvedValue(null);
@@ -65,7 +64,7 @@ it('should update code if already exists', async () => {
     name: 'Name'
   } as User);
   jest.spyOn(randomProvider, 'generateRandomNumber').mockResolvedValue(123456);
-  jest.spyOn(users2FaRepo, 'findLastCodeByUserId').mockResolvedValue({ id: new UniqueEntityID() } as User2FA); 
+  jest.spyOn(users2FaRepo, 'findLastCodeByUserId').mockResolvedValue({ id: 'id' } as User2FA); 
   jest.spyOn(users2FaRepo, 'updateById').mockResolvedValue();
   jest.spyOn(usecase, 'sendCodeByEmail').mockResolvedValue();
 
@@ -81,7 +80,7 @@ it('should update code if already exists', async () => {
   expect(users2FaRepo.findLastCodeByUserId).toHaveBeenCalledWith(userId);
 
   expect(users2FaRepo.updateById).toHaveBeenCalledTimes(1);
-  expect(users2FaRepo.updateById).toHaveBeenCalledWith(expect.any(UniqueEntityID), {
+  expect(users2FaRepo.updateById).toHaveBeenCalledWith(expect.any(String), {
     code: '123456',
   });
 

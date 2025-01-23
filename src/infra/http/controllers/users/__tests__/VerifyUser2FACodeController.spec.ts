@@ -3,7 +3,6 @@ import { TestUtils } from '../../../../../../tests/utils/TestUtils';
 import { find } from '../../../../../core/DependencyInjection';
 import { app } from '../../../../../infra/app';
 import { VerifyUser2FACodeUseCase } from '../../../../../domain/modules/users/usecases/VerifyUser2FACodeUseCase';
-import { UniqueEntityID } from '../../../../../domain/entities/UniqueEntityID';
 
 
 const route = '/users/2fa/verify';
@@ -45,7 +44,7 @@ it('should call usecase and return 204', async () => {
 
   expect(usecase.execute).toHaveBeenCalledTimes(1);
   expect(usecase.execute).toHaveBeenCalledWith({
-    userId: new UniqueEntityID('-1'),
+    userId: '-1',
     code: '123',
   });
 })

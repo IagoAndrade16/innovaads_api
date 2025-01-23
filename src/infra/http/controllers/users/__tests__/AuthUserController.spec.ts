@@ -3,7 +3,7 @@ import request from 'supertest';
 import { app } from "../../../../../infra/app";
 import { find } from '../../../../../core/DependencyInjection';
 import { v4 as uuidv4 } from 'uuid';
-import { AuthUserUseCase } from '../../../../../domain/modules/users/usecases/AuthUserUseCase';
+import { AuthUserUseCase, AuthUserUseCaseOutput } from '../../../../../domain/modules/users/usecases/AuthUserUseCase';
 
 const route = '/users/auth';
 const usecase = find(AuthUserUseCase);
@@ -25,7 +25,9 @@ it('should call usecase with correct params', async () => {
     name: 'Test User',
     email: 'email@email.com',
     phone: '123456',
-  }
+    isOnTrial: true,
+    daysRemainingForTrial: 7,
+  } as AuthUserUseCaseOutput;
   
   jest.spyOn(usecase, 'execute').mockResolvedValue({ 
     ...mockedUsecaseRes

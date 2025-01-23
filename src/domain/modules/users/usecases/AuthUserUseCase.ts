@@ -17,6 +17,9 @@ export type AuthUserUseCaseOutput = {
   name: string;
   email: string;
   phone: string;
+  isOnTrial: boolean;
+  daysRemainingForTrial?: number;
+  packageId: string | null;
 }
 
 @singleton()
@@ -51,6 +54,9 @@ export class AuthUserUseCase implements UseCase<AuthUserUseCaseInput, AuthUserUs
       name: user.name,
       email: user.email,
       phone: user.phone,
+      isOnTrial: user.isOnTrial,
+      daysRemainingForTrial: user.daysRemainingForTrial,
+      packageId: user.packageId,
     }
   }
 }

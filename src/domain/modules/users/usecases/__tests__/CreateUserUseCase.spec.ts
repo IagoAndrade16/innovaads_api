@@ -1,6 +1,5 @@
 import { find } from "../../../../../core/DependencyInjection";
 import { DomainError } from "../../../../errors/DomainError";
-import { UniqueEntityID } from "../../../../entities/UniqueEntityID";
 import { User } from "../../entities/User";
 import { UsersRepository, usersRepositoryAlias } from "../../repositories/UsersRepository";
 import { CreateUserUseCase } from "../CreateUserUseCase";
@@ -9,7 +8,7 @@ const usecase = find(CreateUserUseCase);
 const usersRepository = find<UsersRepository>(usersRepositoryAlias);
 
 it('should throw USER_FOUND if user already exists', async () => {
-  jest.spyOn(usersRepository, 'findByEmail').mockResolvedValue({ id: new UniqueEntityID() } as User);
+  jest.spyOn(usersRepository, 'findByEmail').mockResolvedValue({ id: 'id' } as User);
 
   await expect(usecase.execute({
     name: 'John Doe',
@@ -24,7 +23,7 @@ it('should throw USER_FOUND if user already exists', async () => {
 
 it('should create a user', async () => {
   jest.spyOn(usersRepository, 'findByEmail').mockResolvedValue(null);
-  jest.spyOn(usersRepository, 'insert').mockResolvedValue({ id: new UniqueEntityID() } as User);
+  jest.spyOn(usersRepository, 'insert').mockResolvedValue({ id: 'id' } as User);
 
   await usecase.execute({
     name: 'John Doe',

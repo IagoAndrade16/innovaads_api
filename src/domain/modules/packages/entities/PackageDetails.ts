@@ -4,12 +4,17 @@ import { Package } from "./Package";
 @Entity('package_details')
 export class PackageDetails {
   @PrimaryGeneratedColumn('uuid')
+
   id: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
   description: string;
 
-  @Column({ type: 'uuid', length: 100, nullable: false })
+  @Column({ 
+    type: 'varchar', 
+    length: 100, 
+    nullable: false,
+  })
   packageId: string;
 
   @Column({ type: 'boolean', default: false, nullable: false })

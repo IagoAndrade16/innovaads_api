@@ -1,5 +1,4 @@
 import { find } from "../../../../../core/DependencyInjection";
-import { UniqueEntityID } from "../../../../entities/UniqueEntityID";
 import { UsersRepository, usersRepositoryAlias } from "../../repositories/UsersRepository";
 import { UpdateUserUseCase } from "../UpdateUserUseCase";
 
@@ -11,12 +10,12 @@ it('should update a user', async () => {
   jest.spyOn(usersRepo, 'updateById').mockResolvedValueOnce();
 
   await usecase.execute({
-    userId: new UniqueEntityID(),
+    userId: 'id',
     name: 'John Doe',
   })
 
   expect(usersRepo.updateById).toHaveBeenCalledTimes(1);
-  expect(usersRepo.updateById).toHaveBeenCalledWith(expect.any(UniqueEntityID), {
+  expect(usersRepo.updateById).toHaveBeenCalledWith(expect.any(String), {
     name: 'John Doe',
   });
 })

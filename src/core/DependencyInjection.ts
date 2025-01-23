@@ -38,6 +38,7 @@ export class DependencyInjection {
     container.registerSingleton<GeoCodingProvider>(geoCodingAlias, GeoCodingProviderImpl);
     container.registerSingleton<PackagesRepository>(packagesRepositoryAlias, PackagesRespositoryTypeOrm);
     container.registerSingleton<PackageDetailsRepository>(packageDetailsRepositoryAlias, PackageDetailsRespositoryTypeOrm);
+    container.registerSingleton<HashProvider>(hashProviderAlias, HashProviderImpl);
   }
 }
 

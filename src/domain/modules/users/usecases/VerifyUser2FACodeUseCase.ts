@@ -4,12 +4,11 @@ import { UsersRepository, usersRepositoryAlias } from "../repositories/UsersRepo
 import { Users2FARepository, users2FARepositoryAlias } from "../repositories/Users2FARepository";
 
 import { DomainError } from "../../../errors/DomainError";
-import { UniqueEntityID } from "../../../entities/UniqueEntityID";
 import { UserNotFoundError } from "../../../errors/UserNotFoundError";
 
 export type VerifyUser2FACodeUseCaseInput = {
   code: string;
-  userId: UniqueEntityID;
+  userId: string;
 }
 
 @singleton()

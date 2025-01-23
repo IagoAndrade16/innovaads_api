@@ -1,7 +1,6 @@
 import request from 'supertest';
 import { TestUtils } from '../../../../../../tests/utils/TestUtils';
 import { find } from '../../../../../core/DependencyInjection';
-import { UniqueEntityID } from '../../../../../domain/entities/UniqueEntityID';
 import { UpdateUserPasswordUseCase } from '../../../../../domain/modules/users/usecases/UpdateUserPasswordUseCase';
 import { app } from '../../../../../infra/app';
 
@@ -51,6 +50,6 @@ it('should call usecase and return 204', async () => {
   expect(usecase.execute).toHaveBeenCalledWith({
     actualPassword: '123456',
     newPassword: '1234567',
-    userId: new UniqueEntityID('-1'),
+    userId: '-1',
   });
 })

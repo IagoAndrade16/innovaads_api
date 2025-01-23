@@ -1,5 +1,4 @@
 import { find } from "../../../../../../core/DependencyInjection";
-import { UniqueEntityID } from "../../../../../../domain/entities/UniqueEntityID";
 import { User } from "../../../../../../domain/modules/users/entities/User";
 import { UsersRepository, usersRepositoryAlias } from "../../../../../../domain/modules/users/repositories/UsersRepository";
 import { Database } from "../../../../Database";
@@ -32,7 +31,7 @@ describe('insert', () => {
 
 describe('findById', () => {
   it('should return null if user does not exist', async () => {
-    const user = await usersRepository.findById(new UniqueEntityID());
+    const user = await usersRepository.findById('id');
 
     expect(user).toBeNull();
   })
@@ -50,7 +49,7 @@ describe('findById', () => {
     await Database.source.getRepository(User).delete({ id: user.id });
 
     expect(foundUser).not.toBeNull();
-    expect(foundUser?.id.equals(user.id)).toBe(true);
+    expect(foundUser?.id).toBe(user.id);
   })
 });
 

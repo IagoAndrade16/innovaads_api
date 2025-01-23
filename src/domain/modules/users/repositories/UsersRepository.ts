@@ -1,11 +1,10 @@
-import { UniqueEntityID } from "../../../entities/UniqueEntityID";
 import { User } from "../entities/User";
 
 export type UsersRepository = {
   insert(data: InsertUserDTO): Promise<User>;
-  findById(id: UniqueEntityID): Promise<User | null>;
+  findById(id: string): Promise<User | null>;
   findByEmail(email: string): Promise<User | null>;
-  updateById(id: UniqueEntityID, data: UpdateUserDTO): Promise<void>;
+  updateById(id: string, data: UpdateUserDTO): Promise<void>;
 }
 
 export type InsertUserDTO = {

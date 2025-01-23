@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
+import { find } from "../../../core/DependencyInjection";
 import { UnauthorizedError } from "../../../domain/errors/Unauthorized";
 import { JwtProvider, jwtProviderAlias } from "../../../providers/jwt/JwtProvider";
-import { find } from "../../../core/DependencyInjection";
-import { UniqueEntityID } from "../../../domain/entities/UniqueEntityID";
 
 
 export const _ensureAuthenticated = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
@@ -22,7 +21,7 @@ export const _ensureAuthenticated = async (req: Request, _res: Response, next: N
   const payload = await jwtProvider.verify(tokenSplited) as { id?: string, subject?: string };
 
   req.user = {
-    id: new UniqueEntityID(payload?.id ?? payload?.subject),
+    id: (payload.id ?? payload.subject)!,
   }
   
   next();

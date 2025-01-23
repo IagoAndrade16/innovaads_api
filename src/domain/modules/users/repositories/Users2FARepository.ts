@@ -1,14 +1,13 @@
-import { UniqueEntityID } from "../../../entities/UniqueEntityID";
 import { User2FA } from "../entities/User2FA";
 
 export type Users2FARepository = {
   insert(data: InsertUsers2FADTO): Promise<User2FA>;
-  findLastCodeByUserId(userId: UniqueEntityID): Promise<User2FA | null>;
-  updateById(id: UniqueEntityID, data: UpdateUsers2FADTO): Promise<void>;
+  findLastCodeByUserId(userId: string): Promise<User2FA | null>;
+  updateById(id: string, data: UpdateUsers2FADTO): Promise<void>;
 }
 
 export type InsertUsers2FADTO = {
-  userId: UniqueEntityID;
+  userId: string;
   email: string;
   code: string;
 }

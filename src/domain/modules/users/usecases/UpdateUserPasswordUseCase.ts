@@ -1,13 +1,12 @@
 import { inject, singleton } from "tsyringe";
 import { UseCase } from "../../../../core/UseCase";
 import { HashProvider, hashProviderAlias } from "../../../../providers/hash/HashProvider";
-import { UniqueEntityID } from "../../../entities/UniqueEntityID";
 import { DomainError } from "../../../errors/DomainError";
 import { UserNotFoundError } from "../../../errors/UserNotFoundError";
 import { UsersRepository, usersRepositoryAlias } from "../repositories/UsersRepository";
 
 export type UpdateUserPasswordUseCaseInput = {
-  userId: UniqueEntityID;
+  userId: string;
   actualPassword: string;
   newPassword: string;
 }

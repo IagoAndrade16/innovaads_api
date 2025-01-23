@@ -1,9 +1,8 @@
 import request from 'supertest';
 import { TestUtils } from '../../../../../../tests/utils/TestUtils';
 import { find } from '../../../../../core/DependencyInjection';
-import { app } from '../../../../../infra/app';
 import { SendUser2FAUseCase } from '../../../../../domain/modules/users/usecases/SendUser2FAUseCase';
-import { UniqueEntityID } from '../../../../../domain/entities/UniqueEntityID';
+import { app } from '../../../../../infra/app';
 
 
 const route = '/users/2fa';
@@ -35,6 +34,6 @@ it('should call usecase and return 204', async () => {
 
   expect(usecase.execute).toHaveBeenCalledTimes(1);
   expect(usecase.execute).toHaveBeenCalledWith({
-    userId: new UniqueEntityID('-1'),
+    userId: '-1',
   });
 })

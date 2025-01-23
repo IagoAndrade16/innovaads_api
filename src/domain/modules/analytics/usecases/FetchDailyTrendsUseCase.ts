@@ -4,11 +4,10 @@ import { TrendsProvider, trendsProviderAlias } from "../../../../providers/trend
 
 import { FetchDailyTrendsOutput } from "../../../../providers/trends/dtos/dailyTrendsDTO";
 import { UsersRepository, usersRepositoryAlias } from "../../users/repositories/UsersRepository";
-import { UserNotFound } from "../../../errors/UserNotFound";
-import { UniqueEntityID } from "../../../entities/UniqueEntityID";
+import { UserNotFoundError } from "../../../errors/UserNotFoundError";
 
 export type FetchDailyTrendsUseCaseInput = {
-  userId: UniqueEntityID;
+  userId: string;
   geoLocation: string;
   trendsDate?: string;
 }
@@ -29,7 +28,7 @@ export class FetchDailyTrendsUseCase implements UseCase<FetchDailyTrendsUseCaseI
     const user = await this.usersRepository.findById(input.userId);
     
     if (!user) {
-      throw new UserNotFound();
+      throw new UserNotFoundError();
     }
 
     const dailyTrends = await this.trendsProvider.fetchDailyTrends({

@@ -3,7 +3,6 @@ import { find } from '../../../../../core/DependencyInjection';
 import { app } from '../../../../../infra/app';
 import { TestUtils } from '../../../../../../tests/utils/TestUtils';
 import { UpdateUserUseCase } from '../../../../../domain/modules/users/usecases/UpdateUserUseCase';
-import { UniqueEntityID } from '../../../../../domain/entities/UniqueEntityID';
 
 const route = '/users';
 const usecase = find(UpdateUserUseCase);
@@ -54,6 +53,6 @@ it('should call usecase and return 204', async () => {
     name: 'John Doe',
     email: 'test@email.com',
     phone: '123456789',
-    userId: new UniqueEntityID('-1'),
+    userId: '-1',
   });
 })

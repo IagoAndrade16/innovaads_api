@@ -1,23 +1,17 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-import { UniqueEntityID } from "../../../entities/UniqueEntityID";
-import { typeormIdTransformer } from "../../../../infra/database/typeorm/transformers/TypeOrmIdTransformer";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity('users_auth_2fa')
 export class User2FA {
   @PrimaryGeneratedColumn('uuid')
-  @PrimaryColumn({
-    transformer: typeormIdTransformer,
-  })
-  id: UniqueEntityID;
+  id: string;
 
   @Column({ 
     type: 'varchar', 
     length: '100', 
     nullable: false, 
-    transformer: typeormIdTransformer,
   })
-  userId: UniqueEntityID;
+  userId: string;
 
   @Column({ type: 'varchar', length: '100', nullable: false })
   email: string;

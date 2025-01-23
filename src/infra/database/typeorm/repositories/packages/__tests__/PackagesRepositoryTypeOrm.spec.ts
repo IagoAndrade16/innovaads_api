@@ -48,7 +48,7 @@ describe('insert', () => {
     });
 
 
-    await deletePackageById(packageInsert.id);
+    await deletePackageById(packageInsert.id.toString());
     
     expect(packageInsert).toMatchObject({
       id: expect.any(String),
@@ -67,8 +67,8 @@ describe('insert', () => {
       ...packageMockInputWithDetails,
     });
 
-    await deletePackageById(packageInsert.id);
-    await deletePackageDetails(packageInsert.details.map(detail => detail.id));
+    await deletePackageById(packageInsert.id.toString());
+    await deletePackageDetails(packageInsert.details.map(detail => detail.id.toString()));
 
     expect(packageInsert).toMatchObject({
       id: expect.any(String),
@@ -89,9 +89,9 @@ describe('findById', () => {
       ...packageMockInputWithoutDetails,
     });
 
-    const packageFound = await packagesRepository.findById(packageInsert.id);    
+    const packageFound = await packagesRepository.findById(packageInsert.id.toString());    
 
-    await deletePackageById(packageInsert.id);
+    await deletePackageById(packageInsert.id.toString());
 
     expect(packageFound).not.toBeNull();
     expect(packageFound).toMatchObject({
@@ -113,7 +113,7 @@ describe('findById', () => {
 
     const packageFound = await packagesRepository.findById('invalid-id');
 
-    await deletePackageById(packageInsert.id);
+    await deletePackageById(packageInsert.id.toString());
 
     expect(packageFound).toBeNull();
   });

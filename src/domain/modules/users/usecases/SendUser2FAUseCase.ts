@@ -7,11 +7,10 @@ import { Users2FARepository, users2FARepositoryAlias } from "../repositories/Use
 
 import { RandomProvider, randomProviderAlias } from "../../../../providers/random/RandomProvider";
 import { EmailSenderProvider, emailSenderProviderAlias } from "../../../../providers/mail/EmailSenderProvider";
-import { UniqueEntityID } from "../../../entities/UniqueEntityID";
 import { UserNotFoundError } from "../../../errors/UserNotFoundError";
 
 export type SendUser2FAUseCaseInput = {
-  userId: UniqueEntityID;
+  userId: string;
 }
 
 export type SendCodeByEmaiInput = {
