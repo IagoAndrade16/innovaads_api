@@ -7,7 +7,7 @@ import { ForbiddenError } from "../../../domain/errors/ForbiddenError";
 
 
 export const _ensureAuthenticated = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
-  const token = req.headers.authorization;
+  const token = req.headers.authorization;  
 
   if (!token) {
     throw new UnauthorizedError('UNAUTHORIZED');
