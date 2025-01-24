@@ -1,15 +1,15 @@
 import { inject, singleton } from "tsyringe";
 import { UseCase } from "../../../../core/UseCase";
 import { TrendsProvider, trendsProviderAlias } from "../../../../providers/trends/TrendsProvider";
-import { UniqueEntityID } from "../../../entities/UniqueEntityID";
 import { UsersRepository, usersRepositoryAlias } from "../../users/repositories/UsersRepository";
-import { UserNotFound } from "../../../errors/UserNotFound";
+
 import { FetchInterestOverTimeOutput } from "../../../../providers/trends/dtos/interestOverTimeTrendsDTO";
 import { MomentUtils } from "../../../../core/MomentUtils";
+import { UserNotFoundError } from "../../../errors/UserNotFoundError";
 
 export type SearchInterestUseCaseInput = {
   keyword: string;
-  userId: UniqueEntityID;
+  userId: string;
   startDate?: string;
   endDate?: string;
 }
@@ -30,7 +30,7 @@ export class SearchInterestUseCase implements UseCase<SearchInterestUseCaseInput
     const user = await this.usersRepository.findById(input.userId);
 
     if (!user) {
-      throw new UserNotFound();
+      throw new UserNotFoundError();
     }
 
     const trendsInterestByKeyword = await this.trendsProvider.fetchInterestOverTime({
