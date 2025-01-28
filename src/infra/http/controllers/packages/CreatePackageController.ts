@@ -6,7 +6,6 @@ import { CreatePackageUseCase } from '../../../../domain/modules/packages/usecas
 import { TypeOrmPackagesMapper } from '../../../database/typeorm/mappers/TypeOrmPackagesMapper';
 import { Controller } from '../../../../core/Controller';
 
-// TODO: unit tests
 @injectable()
 export class CreatePackageController implements Controller{
   private bodySchema = yup.object().shape({

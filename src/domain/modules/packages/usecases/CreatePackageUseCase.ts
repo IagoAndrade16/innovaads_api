@@ -1,8 +1,8 @@
 import { inject, singleton } from 'tsyringe';
 
 import { UseCase } from '../../../../core/UseCase';
-import { DomainError } from '../../../errors/DomainError';
 import { ForbiddenError } from '../../../errors/ForbiddenError';
+import { UserNotFoundError } from '../../../errors/UserNotFoundError';
 import { UsersRepository, usersRepositoryAlias } from '../../users/repositories/UsersRepository';
 import { Package } from '../entities/Package';
 import { PackagesRepository, packagesRepositoryAlias } from '../repositories/PackagesRepository';
@@ -23,7 +23,6 @@ export type CreatePackageUseCaseOutput = {
 	package: Package;
 };
 
-// TODO: unit tests
 @singleton()
 export class CreatePackageUseCase implements UseCase<CreatePackageUseCaseInput, CreatePackageUseCaseOutput> {
 	constructor(
@@ -38,11 +37,11 @@ export class CreatePackageUseCase implements UseCase<CreatePackageUseCaseInput, 
 		const user = await this.usersRepository.findById(input.userId);
 
 		if (!user) {
-			throw new DomainError(400, 'USER_NOT_FOUND');
+			throw new UserNotFoundError();
 		}
 
-		if(user.role !== 'admin') {
-			throw new ForbiddenError('OPERATION_NOT_ALLOWED');
+		if (user.role !== 'admin') {
+			throw new ForbiddenError();
 		}
 
 		const insertedPackage = await this.packagesRepository.insert({
