@@ -53,6 +53,8 @@ export class User {
   }
 
   get needsToBuyPlan(): boolean {
+    if(this.role === 'admin') return false;
+    
     return !this.packageId && (this.daysRemainingForTrial <= 0 || !this.isOnTrial)
   }
 
