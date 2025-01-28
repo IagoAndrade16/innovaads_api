@@ -9,18 +9,16 @@ import { ForbiddenError } from "../../../domain/errors/ForbiddenError";
 export const _ensureAuthenticated = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
   const token = req.headers.authorization;  
 
-  if (!token) {
-    throw new UnauthorizedError('UNAUTHORIZED');
-  }
-
+  if (!token) throw new UnauthorizedError('UNAUTHORIZED');
+  
   const jwtProvider = find<JwtProvider>(jwtProviderAlias);
   const tokenSplited = token.split(' ')[1];
 
-  if (!tokenSplited) {
-    throw new UnauthorizedError('UNAUTHORIZED');
-  }
+  if (!tokenSplited) throw new UnauthorizedError('UNAUTHORIZED');
 
   const payload = await jwtProvider.verify(tokenSplited) as { id?: string, subject?: string };
+
+  if (!payload || (!payload.id && !payload.subject)) throw new UnauthorizedError('UNAUTHORIZED');
 
   req.user = {
     id: (payload.id ?? payload.subject)!,
