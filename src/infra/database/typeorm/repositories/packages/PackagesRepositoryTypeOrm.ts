@@ -1,9 +1,9 @@
 
-import { Database } from "../../../Database";
 import { Package } from "../../../../../domain/modules/packages/entities/Package";
 import { PackageDetails } from "../../../../../domain/modules/packages/entities/PackageDetails";
 import { PackageInsertInput } from "../../../../../domain/modules/packages/repositories/@types/packages";
 import { PackagesRepository } from "../../../../../domain/modules/packages/repositories/PackagesRepository";
+import { Database } from "../../../Database";
 
 
 export class PackagesRespositoryTypeOrm implements PackagesRepository {
@@ -27,5 +27,13 @@ export class PackagesRespositoryTypeOrm implements PackagesRepository {
 
   async findById(id: string): Promise<Package | null> {
     return this.repository.findOneBy({ id });
+  }
+
+  async list(): Promise<Package[]> {
+    return this.repository.find({
+      relations: {
+        details: true,
+      }
+    });
   }
 }

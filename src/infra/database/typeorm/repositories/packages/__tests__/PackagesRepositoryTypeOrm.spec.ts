@@ -119,6 +119,22 @@ describe('findById', () => {
   });
 })
 
+describe('list', () => {
+  it('should list all packages', async () => {
+    const packageInsert = await packagesRepository.insert({
+      ...packageMockInputWithoutDetails,
+    });
+
+    const packages = await packagesRepository.list({});
+
+    await deletePackageById(packageInsert.id.toString());
+
+    expect(packages).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: packageInsert.id })
+    ]))
+  });
+})
+
 afterAll(async () => {
   await Database.close();
 });

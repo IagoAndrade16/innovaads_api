@@ -4,6 +4,8 @@ import { find } from "../../../../core/DependencyInjection";
 import { JwtProvider, jwtProviderAlias } from "../../../../providers/jwt/JwtProvider";
 
 
+export type UserRole = 'user' | 'admin';
+
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -34,6 +36,9 @@ export class User {
     default: null,
   })
   packageId: string | null;
+
+  @Column({ type: 'varchar', length: 255, default: 'user' })
+  role: UserRole;
 
   get isOnTrial(): boolean {
     return moment(this.createdAt).add(7, 'days').isAfter(moment());

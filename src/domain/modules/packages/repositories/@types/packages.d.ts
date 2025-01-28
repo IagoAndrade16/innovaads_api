@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 export type PackageInsertInput = {
   name: string;
   description: string;
@@ -7,3 +8,5 @@ export type PackageInsertInput = {
     packageId?: string;
   }[];
 }
+
+export type ListPackagesInput = {}

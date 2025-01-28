@@ -64,3 +64,38 @@ export const _ensureAuthenticatedWithPlan = async (req: Request, _res: Response,
   
   next();
 }
+
+export const _ensureAuthenticatedAsAdmin = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
+  const token = req.headers.authorization;
+
+  if (!token) {
+    throw new UnauthorizedError('UNAUTHORIZED');
+  }
+
+  const jwtProvider = find<JwtProvider>(jwtProviderAlias);
+  const tokenSplited = token.split(' ')[1];
+
+  if (!tokenSplited) {
+    throw new UnauthorizedError('UNAUTHORIZED');
+  }
+
+  const payload = await jwtProvider.verify(tokenSplited) as { id?: string, subject?: string };
+  const userId = (payload.id ?? payload.subject)!;
+  
+  const usersRepository = find<UsersRepository>(usersRepositoryAlias);
+  const user = await usersRepository.findById(userId);
+
+  if(!user) {
+    throw new UnauthorizedError('UNAUTHORIZED');
+  }
+
+  if(user.role !== 'admin') {
+    throw new ForbiddenError();
+  }
+
+  req.user = {
+    id: (payload.id ?? payload.subject)!,
+  }
+  
+  next();
+}
