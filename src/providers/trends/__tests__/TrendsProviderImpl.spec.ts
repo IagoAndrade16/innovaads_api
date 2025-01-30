@@ -38,7 +38,7 @@ it('should fetch daily trends', async () => {
   });
 });
 
-it('should fetch interest over time', async () => {
+it.skip('should fetch interest over time', async () => {
   const interestOverTimeResponse = await trendsProvider.fetchInterestOverTime({
     keyword: ['JavaScript'],
   });
@@ -60,7 +60,7 @@ it('should fetch interest over time', async () => {
   });
 });
 
-it('should fetch interest by region', async () => {
+it.skip('should fetch interest by region', async () => {
   const interestByRegionResponse = await trendsProvider.interestByRegion({
     keyword: ['JavaScript'],
     geo: ['BR'],

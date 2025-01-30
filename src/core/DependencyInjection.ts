@@ -23,6 +23,9 @@ import { PackageDetailsRepository, packageDetailsRepositoryAlias } from "../doma
 import { PackageDetailsRespositoryTypeOrm } from "../infra/database/typeorm/repositories/packages/PackageDetailsRepositoryTypeOrm";
 import { PackagesRepository, packagesRepositoryAlias } from "../domain/modules/packages/repositories/PackagesRepository";
 import { PackagesRespositoryTypeOrm } from "../infra/database/typeorm/repositories/packages/PackagesRepositoryTypeOrm";
+import { usersForgotPassword2FARepositoryAlias, UsersForgotPassword2FARepository } from "../domain/modules/users/repositories/UsersForgotPassword2FARepository";
+import { UsersForgotPassword2FARepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/UsersForgotPassword2FARepositoryTypeOrm";
+
 
 export class DependencyInjection {
   static init(): void {
@@ -39,6 +42,7 @@ export class DependencyInjection {
     container.registerSingleton<PackagesRepository>(packagesRepositoryAlias, PackagesRespositoryTypeOrm);
     container.registerSingleton<PackageDetailsRepository>(packageDetailsRepositoryAlias, PackageDetailsRespositoryTypeOrm);
     container.registerSingleton<HashProvider>(hashProviderAlias, HashProviderImpl);
+    container.registerSingleton<UsersForgotPassword2FARepository>(usersForgotPassword2FARepositoryAlias, UsersForgotPassword2FARepositoryTypeOrm);
   }
 }
 
