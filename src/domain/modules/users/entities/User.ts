@@ -40,6 +40,9 @@ export class User {
   @Column({ type: 'varchar', length: 255, default: 'user' })
   role: UserRole;
 
+  @Column({ type: 'boolean', default: false, nullable: false })
+  verified2fa: boolean;
+
   get isOnTrial(): boolean {
     return moment(this.createdAt).add(7, 'days').isAfter(moment());
   }

@@ -11,12 +11,12 @@ export class VerifyUser2FACodeController implements Controller {
     private readonly verifyUser2FACodeUseCase: VerifyUser2FACodeUseCase,
   ) {}
 
-  private querySchema = yup.object().shape({
+  private bodySchema = yup.object().shape({
     code: yup.string().required(),
   });
 
   async handle(req: Request, res: Response): Promise<void> {
-    const { code } = await this.querySchema.validate(req.query, { abortEarly: false });
+    const { code } = await this.bodySchema.validate(req.body, { abortEarly: false });
     const { id: userId } = req.user!;
 
     await this.verifyUser2FACodeUseCase.execute({

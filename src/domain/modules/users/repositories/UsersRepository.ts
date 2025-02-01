@@ -19,6 +19,7 @@ export type UpdateUserDTO = {
   email?: string;
   phone?: string;
   password?: string;
+  verified2fa?: boolean;
 }
 
 export const usersRepositoryAlias = 'UsersRepository' as const;

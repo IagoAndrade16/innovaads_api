@@ -20,6 +20,7 @@ export type AuthUserUseCaseOutput = {
   isOnTrial: boolean;
   daysRemainingForTrial?: number;
   packageId: string | null;
+  verified2fa: boolean;
 }
 
 @singleton()
@@ -45,7 +46,7 @@ export class AuthUserUseCase implements UseCase<AuthUserUseCaseInput, AuthUserUs
       throw new UnauthorizedError('INVALID_CREDENTIALS');
     }
 
-    const token = await User.generateUserToken({ id: user.id.toString() });
+    const token = await User.generateUserToken({ id: user.id });
 
     return {
       auth: {
@@ -57,6 +58,7 @@ export class AuthUserUseCase implements UseCase<AuthUserUseCaseInput, AuthUserUs
       isOnTrial: user.isOnTrial,
       daysRemainingForTrial: user.daysRemainingForTrial,
       packageId: user.packageId,
+      verified2fa: user.verified2fa,
     }
   }
 }

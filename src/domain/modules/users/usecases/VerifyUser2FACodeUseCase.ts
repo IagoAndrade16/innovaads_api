@@ -42,6 +42,10 @@ export class VerifyUser2FACodeUseCase implements UseCase<VerifyUser2FACodeUseCas
       throw new DomainError(400, 'INVALID_CODE');
     }
 
-    await this.users2FARepository.updateById(user2FACode.id, { alreadyUsed: true });
+    await Promise.all([
+      this.usersRepository.updateById(user.id, { verified2fa: true }),
+      this.users2FARepository.updateById(user2FACode.id, { alreadyUsed: true }),
+    ])
+
   }
 }
