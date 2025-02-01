@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { JsObject } from "../../../@types/JsObject";
-import { ApiProviderAxios } from "../ApiProviderAxios";
+import { ApiHeaders, ApiProviderAxios } from "../ApiProviderAxios";
 
 export type ApiResponse = {
   statusCode: number;
@@ -75,18 +75,22 @@ export class ApiProviderAxiosImpl implements ApiProviderAxios {
     }
   }
 
-  async delete(url: string, headers?: JsObject): Promise<ApiResponse> {
-    const axiosRes = await axios.delete(url, {
-        headers: {
-          ...this.defaultHeaders,
-          ...headers
-        },
-      }
-    ).catch((err) => err.response);
+	async delete(url: string, params: object, headers?: ApiHeaders): Promise<ApiResponse> {
+		console.log('delete params', params);
 
-    return {
-      statusCode: axiosRes.status,
-      data: axiosRes.data
-    }
-  }
+		const axiosRes = await axios.delete(url, {
+			data: params,
+			headers: {
+				...this.defaultHeaders,
+				...headers,
+			},
+		}).catch((err) => err.response);
+
+		console.log('delete axios res', axiosRes);
+
+		return {
+			statusCode: axiosRes.status,
+			data: axiosRes.data,
+		};
+	}
 }

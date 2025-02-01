@@ -1,0 +1,7 @@
+export type RefundStatus =
+| 'SUCCESS'
+| 'FAILED'
+| 'CHARGE_NOT_FOUND'
+| 'ALREADY_REFUNDED'
+| 'PROCESSING'
+| 'CHARGE_FAILED';

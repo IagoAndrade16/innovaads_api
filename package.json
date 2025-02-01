@@ -44,6 +44,7 @@
     "typeorm": "^0.3.20",
     "typescript": "^5.7.2",
     "url-join": "^5.0.0",
+    "url-join-ts": "^1.0.5",
     "yup": "^1.4.0"
   },
   "devDependencies": {

@@ -33,7 +33,7 @@ it('should generate code and sent it by email', async () => {
     email: 'name@email.com', 
     name: 'Name' 
   } as User);
-  jest.spyOn(randomProvider, 'generateRandomNumber').mockResolvedValue(123456);
+  jest.spyOn(randomProvider, 'integer').mockResolvedValue(123456);
   jest.spyOn(users2FaRepo, 'findLastCodeByUserId').mockResolvedValue(null);
   jest.spyOn(users2FaRepo, 'insert').mockResolvedValue({} as User2FA);
   jest.spyOn(usecase, 'sendCodeByEmail').mockResolvedValue();
@@ -43,8 +43,8 @@ it('should generate code and sent it by email', async () => {
   expect(usersRepo.findById).toHaveBeenCalledTimes(1);
   expect(usersRepo.findById).toHaveBeenCalledWith(userId);
 
-  expect(randomProvider.generateRandomNumber).toHaveBeenCalledTimes(1);
-  expect(randomProvider.generateRandomNumber).toHaveBeenCalledWith(100000, 999999);
+  expect(randomProvider.integer).toHaveBeenCalledTimes(1);
+  expect(randomProvider.integer).toHaveBeenCalledWith(100000, 999999);
 
   expect(users2FaRepo.findLastCodeByUserId).toHaveBeenCalledTimes(1);
   expect(users2FaRepo.findLastCodeByUserId).toHaveBeenCalledWith(userId);
@@ -63,7 +63,7 @@ it('should update code if already exists', async () => {
     email: 'name@email.com',
     name: 'Name'
   } as User);
-  jest.spyOn(randomProvider, 'generateRandomNumber').mockResolvedValue(123456);
+  jest.spyOn(randomProvider, 'integer').mockResolvedValue(123456);
   jest.spyOn(users2FaRepo, 'findLastCodeByUserId').mockResolvedValue({ id: 'id' } as User2FA); 
   jest.spyOn(users2FaRepo, 'updateById').mockResolvedValue();
   jest.spyOn(usecase, 'sendCodeByEmail').mockResolvedValue();
@@ -73,8 +73,8 @@ it('should update code if already exists', async () => {
   expect(usersRepo.findById).toHaveBeenCalledTimes(1);
   expect(usersRepo.findById).toHaveBeenCalledWith(userId);
 
-  expect(randomProvider.generateRandomNumber).toHaveBeenCalledTimes(1);
-  expect(randomProvider.generateRandomNumber).toHaveBeenCalledWith(100000, 999999);
+  expect(randomProvider.integer).toHaveBeenCalledTimes(1);
+  expect(randomProvider.integer).toHaveBeenCalledWith(100000, 999999);
 
   expect(users2FaRepo.findLastCodeByUserId).toHaveBeenCalledTimes(1);
   expect(users2FaRepo.findLastCodeByUserId).toHaveBeenCalledWith(userId);

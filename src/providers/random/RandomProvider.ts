@@ -1,5 +1,9 @@
 export type RandomProvider = {
-  generateRandomNumber(min: number, max: number): Promise<number>;
+	string(length: number, type: StringType): string;
+	integer(min?: number, max?: number): Promise<number>;
+	sample<T>(array: T[], amount: number): Promise<T[]>;
 }
 
-export const randomProviderAlias = 'RandomProvider' as const;
+export type StringType = 'alpha' | 'numeric' | 'alphanumeric';
+
+export const randomProviderAlias = 'RandomProvider';

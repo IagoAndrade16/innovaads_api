@@ -42,7 +42,7 @@ export class SendUser2FAUseCase implements UseCase<SendUser2FAUseCaseInput, void
       throw new UserNotFoundError();
     }
     
-    const codeGenerated = await this.randomProvider.generateRandomNumber(100000, 999999);
+    const codeGenerated = await this.randomProvider.integer(100000, 999999);
 
     const user2FACode = await this.users2FARepository.findLastCodeByUserId(user.id);
 

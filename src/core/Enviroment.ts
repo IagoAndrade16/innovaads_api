@@ -26,6 +26,8 @@ export class Environment {
 		INNOVAADS_EMAIL: yup.string().required(),
 
 		GEOCODING_API_URL: yup.string().required(),
+
+		PAGARME_API_KEY: yup.string().required(),
   });
 
   static vars: InferType<typeof Environment.varsSchema>;

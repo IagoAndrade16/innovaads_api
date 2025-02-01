@@ -6,7 +6,11 @@ export type ApiProviderAxios = {
   post(url:string, data: JsObject, headers?: JsObject): Promise<ApiResponse>;
   patch(url:string, data: JsObject, headers?: JsObject): Promise<ApiResponse>;
   put(url:string, data: JsObject, headers?: JsObject): Promise<ApiResponse>;
-  delete(url:string, headers?: JsObject): Promise<ApiResponse>;
+  delete(url:string, params: object, headers?: JsObject): Promise<ApiResponse>;
+}
+
+export type ApiHeaders = {
+	[key: string]: string;
 }
 
 export const apiProviderAxiosAlias = 'ApiProviderAxios' as const;
