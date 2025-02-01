@@ -54,6 +54,7 @@ it('should update 2FA code to alreadyUsed', async () => {
   jest.spyOn(usersRepo, 'findById').mockResolvedValue({ id: userId } as User);
   jest.spyOn(users2FaRepo, 'findLastCodeByUserId').mockResolvedValue({ id: userId, code: '1234' } as User2FA);
   jest.spyOn(users2FaRepo, 'updateById').mockResolvedValue();
+  jest.spyOn(usersRepo, 'updateById').mockResolvedValue();
 
   await usecase.execute({ userId, code: '1234' });
 
@@ -65,4 +66,7 @@ it('should update 2FA code to alreadyUsed', async () => {
 
   expect(users2FaRepo.updateById).toHaveBeenCalledTimes(1);
   expect(users2FaRepo.updateById).toHaveBeenCalledWith(userId, { alreadyUsed: true });
+
+  expect(usersRepo.updateById).toHaveBeenCalledTimes(1);
+  expect(usersRepo.updateById).toHaveBeenCalledWith(userId, { verified2fa: true });
 });

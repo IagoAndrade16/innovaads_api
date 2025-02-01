@@ -25,6 +25,9 @@ import { PackagesRepository, packagesRepositoryAlias } from "../domain/modules/p
 import { PackagesRespositoryTypeOrm } from "../infra/database/typeorm/repositories/packages/PackagesRepositoryTypeOrm";
 import { PagarmeProvider, pagarmeProviderAlias } from "../providers/pagarme/PagarmeProvider";
 import { PagarmeProviderImpl } from "../providers/pagarme/implementations/PagarmeProviderImpl";
+import { usersForgotPassword2FARepositoryAlias, UsersForgotPassword2FARepository } from "../domain/modules/users/repositories/UsersForgotPassword2FARepository";
+import { UsersForgotPassword2FARepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/UsersForgotPassword2FARepositoryTypeOrm";
+
 
 export class DependencyInjection {
   static init(): void {
@@ -42,6 +45,7 @@ export class DependencyInjection {
     container.registerSingleton<PackageDetailsRepository>(packageDetailsRepositoryAlias, PackageDetailsRespositoryTypeOrm);
     container.registerSingleton<HashProvider>(hashProviderAlias, HashProviderImpl);
     container.registerSingleton<PagarmeProvider>(pagarmeProviderAlias, PagarmeProviderImpl);
+    container.registerSingleton<UsersForgotPassword2FARepository>(usersForgotPassword2FARepositoryAlias, UsersForgotPassword2FARepositoryTypeOrm);
   }
 }
 

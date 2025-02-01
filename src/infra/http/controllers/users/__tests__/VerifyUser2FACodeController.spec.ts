@@ -16,14 +16,14 @@ beforeAll(async () => {
 
 describe('Schema validation', () => {
   it('should return 401 if no token is provided', async () => {
-    const res = await request(app).get(route)
+    const res = await request(app).post(route)
     .send({});
 
     expect(res.status).toBe(401);
   })
 
   it('should require necessary parameters', async () => {
-    const res = await request(app).get(route)
+    const res = await request(app).post(route)
     .set('Authorization', `${authToken}`)
     .send({});
 
@@ -35,10 +35,9 @@ describe('Schema validation', () => {
 it('should call usecase and return 204', async () => {
   jest.spyOn(usecase, 'execute').mockResolvedValue();
 
-  const res = await request(app).get(route)
+  const res = await request(app).post(route)
   .set('Authorization', `${authToken}`)
-  .query({ code: '123' })
-  .send();  
+  .send({ code: '123' });  
 
   expect(res.status).toBe(204);
 
