@@ -2,7 +2,8 @@ export type CreateSubscriptionInput = {
   customer_id: string;
   installments: number;
   description: string;
-  pricing_schema: {
+  card_id: string;
+  pricing_scheme: {
     scheme_type: 'unit' | 'package' | 'volume' | 'tier';
     price: number;
     minimum_price: number;

@@ -43,6 +43,9 @@ export class User {
   @Column({ type: 'boolean', default: false, nullable: false })
   verified2fa: boolean;
 
+  @Column({ type: 'varchar', length: 100, nullable: true, default: null })
+  subscriptionId: string | null;
+
   get isOnTrial(): boolean {
     return moment(this.createdAt).add(7, 'days').isAfter(moment());
   }

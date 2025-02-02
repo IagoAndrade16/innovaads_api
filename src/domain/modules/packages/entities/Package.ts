@@ -40,4 +40,8 @@ export class Package {
     cascade: true
   })
   details: PackageDetails[];
+
+  get priceInCents() {
+    return this.price * 100;
+  }
 }

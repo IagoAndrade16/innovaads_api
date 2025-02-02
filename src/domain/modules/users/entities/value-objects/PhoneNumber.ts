@@ -14,7 +14,7 @@ export class PhoneNumber {
       throw new Error('Invalid phone number');
     }
 
-    this.value = valueCleaned;
+    this.value = `55${valueCleaned}`;
   }
 
   static parse(phoneNumber: string | undefined): PhoneNumber {
@@ -43,6 +43,22 @@ export class PhoneNumber {
   }
 
   withoutDDD(): string {
-    return this.value.slice(2);
+    return this.value.slice(4);
+  }
+
+  withCountryCodeAndDDD(): string {
+    return `${this.value}`;
+  }
+
+  get countryCode(): string {
+    return this.value.slice(0, 2);
+  }
+
+  get areaCode(): string {
+    return this.value.slice(2, 4);
+  }
+
+  get number(): string {
+    return this.value.slice(4);
   }
 }

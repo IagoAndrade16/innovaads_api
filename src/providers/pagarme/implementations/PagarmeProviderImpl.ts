@@ -139,8 +139,9 @@ export class PagarmeProviderImpl implements PagarmeProvider {
 			billing_type: 'prepaid',
 		});
 
+		console.log(`${moment().format('DD/MM/YYYY HH:mm:ss')} - create subscription res: ${JSON.stringify(res.data, null, 2)}`);
+		
 		if (res.statusCode !== 200) {
-			console.log(`${moment().format('DD/MM/YYYY HH:mm:ss')} - card deletion failed: ${JSON.stringify(res.data, null, 2)}`);
 			return {
 				status: 'FAILED',
 			}
