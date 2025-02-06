@@ -4,6 +4,7 @@ import { CreateOrderWithCardInput, CreateOrderWithCardOutput } from './types/Cre
 import { CreateSubscriptionInput, CreateSubscriptionOutput } from './types/CreateSubscription';
 import { DeleteCardStatus } from './types/DeleteCardStatus';
 import { PagarmeDeleteSubscriptionOutput } from './types/DeleteSubscription';
+import { GetSubscriptionOutput } from './types/GetSubscriptionTypes';
 import { ObtainCardInput } from './types/ObtainCardInput';
 import { ObtainCardOutput } from './types/ObtainCardOutput';
 import { ObtainChargeOutput } from './types/ObtainChargeOutput';
@@ -19,6 +20,7 @@ export type PagarmeProvider = {
 	obtainCharge(chargeId: string): Promise<ObtainChargeOutput | null>;
 	createSubscription(order: CreateSubscriptionInput): Promise<CreateSubscriptionOutput>;
 	deleteSubscription(subscriptionId: string): Promise<PagarmeDeleteSubscriptionOutput>;
+	getSubscription(subscriptionId: string): Promise<GetSubscriptionOutput | null>;
 }
 
 export const pagarmeProviderAlias = 'PagarmeProvider';

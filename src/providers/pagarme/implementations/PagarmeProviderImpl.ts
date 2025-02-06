@@ -18,6 +18,7 @@ import { PagarmeCreditCard } from '../types/PagarmeCreditCard';
 import { PagarmeCustomer } from '../types/PagarmeCustomer';
 import { CreateSubscriptionInput, CreateSubscriptionOutput } from '../types/CreateSubscription';
 import { PagarmeDeleteSubscriptionOutput } from '../types/DeleteSubscription';
+import { GetSubscriptionOutput } from '../types/GetSubscriptionTypes';
 
 @injectable()
 export class PagarmeProviderImpl implements PagarmeProvider {
@@ -166,6 +167,17 @@ export class PagarmeProviderImpl implements PagarmeProvider {
 		return {
 			status: 'SUCCESS',
 		}
+	}
+
+	async getSubscription(subscriptionId: string): Promise<GetSubscriptionOutput | null> {
+		const res = await this.get(`/subscriptions/${subscriptionId}`);
+
+		if (res.statusCode !== 200) {
+			console.log(`${moment().format('DD/MM/YYYY HH:mm:ss')} - subscription obtain failed: ${JSON.stringify(res.data, null, 2)}`);
+			return null;
+		}
+
+		return res.data as GetSubscriptionOutput;
 	}
 
 	private async get(relativeUrl: string): Promise<ApiResponse> {

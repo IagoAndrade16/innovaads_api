@@ -380,3 +380,42 @@ describe('deleteSubscription', () => {
 		});
 	});
 })
+
+describe('getSubscription', () => {
+	it('should return null if pagarme return errors', async () => {
+		jest.spyOn(apiProvider, 'get').mockResolvedValueOnce({
+			statusCode: 400,
+			data: {},
+		});
+
+		const res = await pagarmeProvider.getSubscription('sub_test');
+
+		expect(res).toBeNull();
+	});
+
+	it('should obtain a subscription', async () => {
+		const customer = await pagarmeProvider.createCustomer(sampleCustomer);
+		const card = await pagarmeProvider.createCard(customer!.id, sampleCard);
+
+		const subscription = await pagarmeProvider.createSubscription({
+			card_id: card!.id,
+			customer_id: customer!.id,
+			description: 'Test',
+			installments: 1,
+			interval_count: 1,
+			pricing_scheme: {
+				minimum_price: 100,
+				price: 100,
+				scheme_type: 'unit',
+			},
+			quantity: 1,
+		});
+
+		const res = await pagarmeProvider.getSubscription(subscription.subscription_id!);
+
+		expect(res).toMatchObject({
+			id: subscription.subscription_id,
+			status: 'active',
+		});
+	});
+})

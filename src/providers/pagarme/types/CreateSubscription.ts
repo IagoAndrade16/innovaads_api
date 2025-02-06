@@ -13,12 +13,15 @@ export type CreateSubscriptionInput = {
   payment_method?: 'credit_card' | 'boleto' | 'debit_card';
   currency?: 'BRL';
   start_at?: string;
-  interval?: 'day' | 'week' | 'month' | 'year';
+  interval?: SubscriptionInterval;
   minimum_price?: number;
   interval_count: number;
-  billing_type?: 'prepaid' | 'postpaid' | 'exact_day';
+  billing_type?: SubscriptionBillingType;
   statement_descriptor?: string;
 }
+
+export type SubscriptionInterval = 'day' | 'week' | 'month' | 'year';
+export type SubscriptionBillingType = 'prepaid' | 'postpaid' | 'exact_day';
 
 export type CreateSubscriptionOutput = {
   status: 'SUCCESS' | 'FAILED'

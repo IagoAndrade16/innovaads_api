@@ -36,4 +36,13 @@ export class PackagesRespositoryTypeOrm implements PackagesRepository {
       }
     });
   }
+
+  async findByIdWithDetails(id: string): Promise<Package | null> {
+    return this.repository.findOne({
+      where: { id }, 
+      relations: {
+        details: true,
+      }
+    });
+  }
 }
