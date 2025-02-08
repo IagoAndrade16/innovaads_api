@@ -6,6 +6,7 @@ import { DomainError } from "../../../errors/DomainError";
 import { UserNotFoundError } from "../../../errors/UserNotFoundError";
 import { PackageDetails } from "../../packages/entities/PackageDetails";
 import { PackagesRepository, packagesRepositoryAlias } from "../../packages/repositories/PackagesRepository";
+import { UserSubscriptionStatus } from "../entities/User";
 import { UsersRepository, usersRepositoryAlias } from "../repositories/UsersRepository";
 
 export type GetUserBillingSummaryUseCaseInput = {
@@ -22,6 +23,7 @@ export type GetUserBillingSummaryUseCaseOutput = {
   } | null,
   subscription: {
     nextBillingAt: string;
+    status: UserSubscriptionStatus;
     card: {
       brand: string;
       lastFourDigits: string;
@@ -50,7 +52,7 @@ export class GetUserBillingSummaryUseCase implements UseCase<GetUserBillingSumma
       throw new UserNotFoundError();
     }
 
-    if(!user.packageId) {
+    if(!user.packageId || !user.subscriptionId) {
       throw new DomainError(400, 'USER_HAS_NO_PACKAGE');
     }
 
@@ -77,6 +79,7 @@ export class GetUserBillingSummaryUseCase implements UseCase<GetUserBillingSumma
     if(subscription) {
       response.subscription = {
         nextBillingAt: DomainDates.format(subscription.next_billing_at, 'DD/MM/YYYY'),
+        status: subscription.status,
         card: {
           brand: subscription.card.brand,
           lastFourDigits: subscription.card.last_four_digits,

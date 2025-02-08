@@ -42,6 +42,7 @@ it('should call usecase', async () => {
       price: 10,
     },
     subscription: {
+      status: 'active',
       card: {
         brand: 'Visa',
         firstSixDigits: '123456',

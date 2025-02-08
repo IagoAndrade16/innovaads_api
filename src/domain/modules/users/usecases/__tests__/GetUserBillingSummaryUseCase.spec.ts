@@ -44,6 +44,7 @@ it('should return user billing summary', async () => {
   } as Package);
   jest.spyOn(pagarmeProvider, 'getSubscription').mockResolvedValue({
     next_billing_at: new Date(),
+    status: 'active',
     card: {
       last_four_digits: '1234',
       first_six_digits: '123456',
@@ -59,6 +60,7 @@ it('should return user billing summary', async () => {
     },
     subscription: {
       nextBillingAt: DomainDates.format(new Date(), 'DD/MM/YYYY'),
+      status: 'active',
       card: {
         brand: 'visa',
         lastFourDigits: '1234',

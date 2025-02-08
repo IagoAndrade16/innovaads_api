@@ -455,6 +455,7 @@ it('should sign package successfully', async () => {
   expect(usersRepo.updateById).toHaveBeenCalledWith('userId', { 
     subscriptionId: 'subscriptionId',
     packageId: 'packageId',
+    subscriptionStatus: 'active'
   });
 
   expect(subscriptionsRepo.insert).toHaveBeenCalledTimes(1);

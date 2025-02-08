@@ -159,6 +159,13 @@ export class PagarmeProviderImpl implements PagarmeProvider {
 
 		if (res.statusCode !== 200) {
 			console.log(`${moment().format('DD/MM/YYYY HH:mm:ss')} - subscription deletion failed: ${JSON.stringify(res.data, null, 2)}`);
+
+			const isCanceled = res.data.message && res.data.message.includes('is canceled');
+			if(isCanceled) {
+				return {
+					status: 'ALREADY_CANCELED',
+				}
+			}
 			return {
 				status: 'FAILED',
 			}

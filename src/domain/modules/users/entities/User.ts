@@ -2,9 +2,12 @@ import moment from "moment";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { find } from "../../../../core/DependencyInjection";
 import { JwtProvider, jwtProviderAlias } from "../../../../providers/jwt/JwtProvider";
+import { PagarmeProvider, pagarmeProviderAlias } from "../../../../providers/pagarme/PagarmeProvider";
+import { MomentUtils } from "../../../../core/MomentUtils";
 
 
 export type UserRole = 'user' | 'admin';
+export type UserSubscriptionStatus = 'active' | 'canceled' | 'failed';
 
 @Entity('users')
 export class User {
@@ -46,6 +49,9 @@ export class User {
   @Column({ type: 'varchar', length: 100, nullable: true, default: null })
   subscriptionId: string | null;
 
+  @Column({ type: 'varchar', length: 255, nullable: true, default: null })
+  subscriptionStatus: UserSubscriptionStatus | null;
+
   get isOnTrial(): boolean {
     return moment(this.createdAt).add(7, 'days').isAfter(moment());
   }
@@ -58,15 +64,37 @@ export class User {
     return moment(this.createdAt).add(7, 'days').diff(moment(), 'days');
   }
 
-  get needsToBuyPlan(): boolean {
-    if(this.role === 'admin') return false;
-    
-    return !this.packageId && (this.daysRemainingForTrial <= 0 || !this.isOnTrial)
+  async needsToBuyPlan(): Promise<boolean> {
+		if(this.subscriptionStatus === 'active') return true;
+
+		if(this.subscriptionStatus === 'canceled') {
+			const nowFormatted = MomentUtils.formatDate(new Date(), 'YYYY-MM-DD');
+      const canUsePlatformUntil = await this.canUsePlatformUntil();
+			const canUsePlatformUntilFormatted = MomentUtils.formatDate(canUsePlatformUntil, 'YYYY-MM-DD');
+			if(canUsePlatformUntilFormatted > nowFormatted) return true;
+			return false;
+		}
+
+
+		if(!this.subscriptionStatus) {
+			if(this.daysRemainingForTrial > 0) return true;
+			return false;
+		}
+
+		return false;
   }
 
-  static async generateUserToken(input: {
-    id: string;
-  }): Promise<string> {
+  public async canUsePlatformUntil(): Promise<Date | null> {
+    if(!this.subscriptionId) return null;
+
+    const pagarmeProvider = find<PagarmeProvider>(pagarmeProviderAlias);
+
+    const subscription = await pagarmeProvider.getSubscription(this.subscriptionId);
+    
+    return subscription?.next_billing_at || null;
+  }
+
+  static async generateUserToken(input: { id: string }): Promise<string> {
     const jwtProvider = find<JwtProvider>(jwtProviderAlias);
 
     return jwtProvider.sign({ id: input.id });

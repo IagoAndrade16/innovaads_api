@@ -2,6 +2,7 @@ import { Subscription } from "../entities/Subscription";
 
 export type SubscriptionsRepository = {
   insert(input: InsertSubscritionInput): Promise<Subscription>;
+  delete(id: string): Promise<void>;
 }
 
 export type InsertSubscritionInput = {

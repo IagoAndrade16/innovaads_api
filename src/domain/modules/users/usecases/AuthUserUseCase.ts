@@ -2,7 +2,7 @@ import { inject, singleton } from "tsyringe";
 import { UseCase } from "../../../../core/UseCase";
 import { UnauthorizedError } from "../../../errors/Unauthorized";
 import { HashProvider, hashProviderAlias } from "../../../../providers/hash/HashProvider";
-import { User } from "../entities/User";
+import { User, UserSubscriptionStatus } from "../entities/User";
 import { UsersRepository, usersRepositoryAlias } from "../repositories/UsersRepository";
 
 export type AuthUserUseCaseInput = {
@@ -21,6 +21,8 @@ export type AuthUserUseCaseOutput = {
   daysRemainingForTrial?: number;
   packageId: string | null;
   verified2fa: boolean;
+  subscriptionStatus: UserSubscriptionStatus | null;
+  canUsePlatformUntil: Date | null;
 }
 
 @singleton()
@@ -59,6 +61,8 @@ export class AuthUserUseCase implements UseCase<AuthUserUseCaseInput, AuthUserUs
       daysRemainingForTrial: user.daysRemainingForTrial,
       packageId: user.packageId,
       verified2fa: user.verified2fa,
+      subscriptionStatus: user.subscriptionStatus,
+      canUsePlatformUntil: await user.canUsePlatformUntil(),
     }
   }
 }

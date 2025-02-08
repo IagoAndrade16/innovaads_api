@@ -142,6 +142,7 @@ export class SignPackageUseCase implements UseCase<SignPackageUseCaseInput, Sign
 			this.usersRepository.updateById(user.id, {
 				packageId: choosedPackage.id,
 				subscriptionId: subscription.subscription_id,
+				subscriptionStatus: 'active'
 			}),
 			this.subscriptionsRepository.insert({
 				packageId: choosedPackage.id,

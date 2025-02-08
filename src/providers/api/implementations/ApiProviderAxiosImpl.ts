@@ -76,7 +76,7 @@ export class ApiProviderAxiosImpl implements ApiProviderAxios {
   }
 
 	async delete(url: string, params: object, headers?: ApiHeaders): Promise<ApiResponse> {
-		console.log('delete params', params);
+		// console.log('delete params', params);
 
 		const axiosRes = await axios.delete(url, {
 			data: params,
@@ -86,7 +86,7 @@ export class ApiProviderAxiosImpl implements ApiProviderAxios {
 			},
 		}).catch((err) => err.response);
 
-		console.log('delete axios res', axiosRes);
+		// console.log('delete axios res', axiosRes);
 
 		return {
 			statusCode: axiosRes.status,

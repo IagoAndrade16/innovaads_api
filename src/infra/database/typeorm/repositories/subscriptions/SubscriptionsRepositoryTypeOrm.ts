@@ -17,4 +17,10 @@ export class SubscriptionsRepositoryTypeOrm implements SubscriptionsRepository {
 
     return subscription;
   }
+  async delete(subscriptionId: string): Promise<void> {
+    await this.repository.update({ subscriptionId }, {
+      deleted: true,
+      deletedAt: new Date(),
+    });
+  }
 }
