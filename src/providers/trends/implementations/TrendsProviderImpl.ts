@@ -13,6 +13,9 @@ export class TrendsProviderImpl implements TrendsProvider {
       hl: input.hl,
       timezone: input.timezone,
       trendDate: input.trendDate,
+      options: {
+        agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+      }
     });
 
     return JSON.parse(dailyTrendsRes);
@@ -27,6 +30,9 @@ export class TrendsProviderImpl implements TrendsProvider {
       hl: input.hl,
       timezone: input.timezone,
       category: input.category,
+      options: {
+        agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+      }
     });
 
     return JSON.parse(interestOverTimeRes);
@@ -42,6 +48,9 @@ export class TrendsProviderImpl implements TrendsProvider {
       timezone: input.timezone,
       category: input.category,
       resolution: input.resolution,
+      options: {
+        agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+      }
     });
 
     return JSON.parse(interestByRegionRes);
@@ -56,6 +65,9 @@ export class TrendsProviderImpl implements TrendsProvider {
       hl: input.hl,
       timezone: input.timezone,
       category: input.category,
+      options: {
+        agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+      }
     });
 
     return JSON.parse(relatedQueriesRes);

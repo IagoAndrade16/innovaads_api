@@ -24,20 +24,20 @@ export type GetRegionByCoordinatesOutput = {
 
 export type NominatimDataResponse = {
   place_id: string;
-    licence: string;
-    osm_type: string;
-    osm_id: string;
-    lat: string;
-    lon: string;
-    place_rank: number;
-    category: string;
-    type: string;
-    importance: number;
-    addresstype: string;
-    display_name: string;
-    name: string;
-    address: LocationDetails;
-    boundingbox: string[];
+  licence: string;
+  osm_type: string;
+  osm_id: string;
+  lat: string;
+  lon: string;
+  place_rank: number;
+  category: string;
+  type: string;
+  importance: number;
+  addresstype: string;
+  display_name: string;
+  name: string;
+  address: LocationDetails;
+  boundingbox: string[];
 }
 
 export const geoCodingAlias = 'GeoCodingProvider';
