@@ -1,7 +1,7 @@
 import moment from "moment";
 
 export class MomentUtils {
-  static formatDate(date: Date, format?: string): string {
+  static formatDate(date: Date | null, format?: string): string {
     return moment(date).format(format);
   }
 

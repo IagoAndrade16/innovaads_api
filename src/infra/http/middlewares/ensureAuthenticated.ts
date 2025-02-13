@@ -52,7 +52,7 @@ export const _ensureAuthenticatedWithPlan = async (req: Request, _res: Response,
     throw new UnauthorizedError('UNAUTHORIZED');
   }
 
-  if(user.needsToBuyPlan) {
+  if(await user.needsToBuyPlan()) {
     throw new ForbiddenError();
   }
 

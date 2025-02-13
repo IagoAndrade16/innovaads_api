@@ -8,6 +8,9 @@ import { UserNotFoundError } from '../../../errors/UserNotFoundError';
 import { PackagesRepository, packagesRepositoryAlias } from '../../packages/repositories/PackagesRepository';
 import { UsersRepository, usersRepositoryAlias } from '../../users/repositories/UsersRepository';
 import { Cpf } from '../entities/value-objects/Cpf';
+import { PhoneNumber } from '../../users/entities/value-objects/PhoneNumber';
+import { Document } from '../entities/value-objects/Document';
+import { SubscriptionsRepository, subscriptionsRepositoryAlias } from '../repositories/SubscriptionsRepository';
 
 export type SignPackageUseCaseInput = {
 	packageId: string;
@@ -51,6 +54,9 @@ export class SignPackageUseCase implements UseCase<SignPackageUseCaseInput, Sign
 
 		@inject(pagarmeProviderAlias)
 		private readonly pagarmeProvider: PagarmeProvider,
+
+		@inject(subscriptionsRepositoryAlias)
+		private readonly subscriptionsRepository: SubscriptionsRepository,
 	) {}
 
 	async execute(input: SignPackageUseCaseInput): Promise<SignPackageUseCaseOutput> {
@@ -63,21 +69,24 @@ export class SignPackageUseCase implements UseCase<SignPackageUseCaseInput, Sign
     const choosedPackage = await this.packagesRepository.findById(input.packageId);
 
     if (!choosedPackage) {
-      throw new ResourceNotFoundError();
+      throw new ResourceNotFoundError('PACKAGE_NOT_FOUND');
     }
+
+		const userPhoneNumber = PhoneNumber.parse(user.phone);
+		const document = Document.parse(input.payerData.document);
 
 		const { payerData } = input;
 		const customer = await this.pagarmeProvider.createCustomer({
 			type: 'individual',
 			name: user.name,
 			email: user.email,
-			document: payerData.document,
+			document: document.onlyNumbers(),
 			document_type: Cpf.isValid(payerData.document) ? 'CPF' : 'CNPJ',
 			phones: {
 				mobile_phone: {
-					country_code: user.phone.substring(0, 2),
-					area_code: user.phone.substring(2, 4),
-					number: user.phone.substring(4),
+					country_code: userPhoneNumber.countryCode,
+					area_code: userPhoneNumber.areaCode,
+					number: userPhoneNumber.number,
 				},
 			},
 		});
@@ -87,6 +96,7 @@ export class SignPackageUseCase implements UseCase<SignPackageUseCaseInput, Sign
 		}
 
 		const { paymentData } = input;
+
 		const card = await this.pagarmeProvider.createCard(customer.id, {
 			number: paymentData.number,
 			holder_name: paymentData.holderName,
@@ -108,5 +118,37 @@ export class SignPackageUseCase implements UseCase<SignPackageUseCaseInput, Sign
 		if (!card) {
 			throw new DomainError(400, 'INVALID_CARD');
 		}
+
+		const subscription = await this.pagarmeProvider.createSubscription({
+			customer_id: customer.id,
+			description: choosedPackage.name,
+			installments: 1,
+			interval_count: 1,
+			card_id: card.id,
+			pricing_scheme: {
+				minimum_price: choosedPackage.priceInCents,
+				price: choosedPackage.priceInCents,
+				scheme_type: 'unit',
+			},
+			minimum_price: choosedPackage.priceInCents,
+			quantity: 1,
+		});
+
+		if(subscription.status === 'FAILED') {
+			throw new DomainError(400, 'PAYMENT_FAILED');
+		}
+
+		await Promise.all([
+			this.usersRepository.updateById(user.id, {
+				packageId: choosedPackage.id,
+				subscriptionId: subscription.subscription_id,
+				subscriptionStatus: 'active'
+			}),
+			this.subscriptionsRepository.insert({
+				packageId: choosedPackage.id,
+				subscriptionId: subscription.subscription_id!,
+				userId: user.id,
+			}),
+		])
 	}
 }

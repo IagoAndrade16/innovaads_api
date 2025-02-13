@@ -27,6 +27,10 @@ import { PagarmeProvider, pagarmeProviderAlias } from "../providers/pagarme/Paga
 import { PagarmeProviderImpl } from "../providers/pagarme/implementations/PagarmeProviderImpl";
 import { usersForgotPassword2FARepositoryAlias, UsersForgotPassword2FARepository } from "../domain/modules/users/repositories/UsersForgotPassword2FARepository";
 import { UsersForgotPassword2FARepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/UsersForgotPassword2FARepositoryTypeOrm";
+import { SubscriptionsRepository, subscriptionsRepositoryAlias } from "../domain/modules/subscriptions/repositories/SubscriptionsRepository";
+import { SubscriptionsRepositoryTypeOrm } from "../infra/database/typeorm/repositories/subscriptions/SubscriptionsRepositoryTypeOrm";
+import { AdsLibraryProvider, adsLibraryProviderAlias } from "../providers/adslibrary/AdsLibraryProvider";
+import { AdsLibraryProviderImpl } from "../providers/adslibrary/implementations/AdsLibraryProviderImpl";
 
 
 export class DependencyInjection {
@@ -46,6 +50,8 @@ export class DependencyInjection {
     container.registerSingleton<HashProvider>(hashProviderAlias, HashProviderImpl);
     container.registerSingleton<PagarmeProvider>(pagarmeProviderAlias, PagarmeProviderImpl);
     container.registerSingleton<UsersForgotPassword2FARepository>(usersForgotPassword2FARepositoryAlias, UsersForgotPassword2FARepositoryTypeOrm);
+    container.registerSingleton<SubscriptionsRepository>(subscriptionsRepositoryAlias, SubscriptionsRepositoryTypeOrm);
+    container.registerSingleton<AdsLibraryProvider>(adsLibraryProviderAlias, AdsLibraryProviderImpl);
   }
 }
 

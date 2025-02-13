@@ -2,9 +2,6 @@
 import { User } from "../../../../../domain/modules/users/entities/User";
 import { InsertUserDTO, UpdateUserDTO, UsersRepository } from "../../../../../domain/modules/users/repositories/UsersRepository";
 import { Database } from "../../../Database";
-import { genUUID } from "../../utils/gen-uuid";
-
-
 
 export class UsersRepositoryTypeOrm implements UsersRepository {
   private repository = Database.source.getRepository(User);
@@ -12,7 +9,6 @@ export class UsersRepositoryTypeOrm implements UsersRepository {
   async insert(data: InsertUserDTO): Promise<User> {
     const user = this.repository.create({
       ...data,
-      id: genUUID(),
     });
 
     await this.repository.save(user);

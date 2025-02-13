@@ -1,3 +1,3 @@
 export type PagarmeDeleteSubscriptionOutput = {
-  status: 'SUCCESS' | 'FAILED';
+  status: 'SUCCESS' | 'FAILED' | 'ALREADY_CANCELED';
 }

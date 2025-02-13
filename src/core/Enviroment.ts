@@ -28,6 +28,8 @@ export class Environment {
 		GEOCODING_API_URL: yup.string().required(),
 
 		PAGARME_API_KEY: yup.string().required(),
+
+		APPLICATION_LOG_LEVEL: yup.string().optional().oneOf(['debug', 'info', 'warn', 'error', 'silent', 'fatal', 'trace']).default('info'),
   });
 
   static vars: InferType<typeof Environment.varsSchema>;
@@ -59,4 +61,16 @@ export class Environment {
   static getType(): 'dev' | 'test' | 'prod' {
   	return process.env.NODE_ENV as 'dev' | 'test' | 'prod';
   }
+
+	static isProduction() {
+		return Environment.getType() === 'prod';
+	}
+
+	static isDevelopment() {
+		return Environment.getType() === 'dev';
+	}
+
+	static isTest() {
+		return Environment.getType() === 'test';
+	}
 }

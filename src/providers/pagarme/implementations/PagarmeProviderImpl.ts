@@ -1,5 +1,4 @@
  
-import moment from 'moment';
 import { inject, injectable } from 'tsyringe';
 import { urlJoin } from 'url-join-ts';
 
@@ -18,19 +17,28 @@ import { PagarmeCreditCard } from '../types/PagarmeCreditCard';
 import { PagarmeCustomer } from '../types/PagarmeCustomer';
 import { CreateSubscriptionInput, CreateSubscriptionOutput } from '../types/CreateSubscription';
 import { PagarmeDeleteSubscriptionOutput } from '../types/DeleteSubscription';
+import { GetSubscriptionOutput } from '../types/GetSubscriptionTypes';
+import { Logger } from '../../../core/Logger';
 
 @injectable()
 export class PagarmeProviderImpl implements PagarmeProvider {
 	constructor(
     @inject(apiProviderAxiosAlias)
     private apiProvider: ApiProviderAxios,
+
+		@inject(Logger)
+		private logger: Logger,
 	) {}
 
 	async createCustomer(customer: PagarmeCustomer): Promise<CreateClientOutput> {
+		this.logger.info(`creating customer: ${JSON.stringify(customer, null, 2)}`);
+
 		const customerRes = await this.post('customers', customer);
 
+		this.logger.info(`customer creation res: ${JSON.stringify(customerRes.data, null, 2)}`);
+
 		if (customerRes.statusCode !== 200) {
-			console.log(`${moment().format('DD/MM/YYYY HH:mm:ss')} - customer creation failed: ${JSON.stringify(customerRes.data, null, 2)}`);
+			this.logger.error(`customer creation failed: ${JSON.stringify(customerRes.data, null, 2)}`);
 			return null;
 		}
 
@@ -46,10 +54,15 @@ export class PagarmeProviderImpl implements PagarmeProvider {
 				line_2: card.billing_address.complement,
 			},
 		};
+
+		this.logger.info(`creating card: ${JSON.stringify(params, null, 2)}`);
+
 		const cardRes = await this.post(`customers/${customerId}/cards`, params);
 
+		this.logger.info(`card creation res: ${JSON.stringify(cardRes.data, null, 2)}`);
+
 		if (cardRes.statusCode !== 200) {
-			console.log(`${moment().format('DD/MM/YYYY HH:mm:ss')} - card creation failed: ${JSON.stringify(cardRes.data, null, 2)}`);
+			this.logger.error(`card creation failed: ${JSON.stringify(cardRes.data, null, 2)}`);
 			return null;
 		}
 
@@ -71,14 +84,16 @@ export class PagarmeProviderImpl implements PagarmeProvider {
 			})),
 		};
 
+		this.logger.info(`creating order: ${JSON.stringify(params, null, 2)}`);
+
 		const orderRes = await this.post('orders', params);
 
+		this.logger.info(`order creation res: ${JSON.stringify(orderRes.data, null, 2)}`);
+
 		if (orderRes.statusCode !== 200 || orderRes.data.status !== 'paid') {
-			console.log(`${moment().format('DD/MM/YYYY HH:mm:ss')} - card declined: ${JSON.stringify(orderRes.data, null, 2)}`);
+			this.logger.error(`card declined: ${JSON.stringify(orderRes.data, null, 2)}`);
 			return { chargeId: null };
 		}
-
-		console.log(`${moment().format('DD/MM/YYYY HH:mm:ss')} - card approved: ${JSON.stringify(orderRes.data, null, 2)}`);
 
 		return { chargeId: orderRes.data.charges[0].id };
 	}
@@ -87,7 +102,7 @@ export class PagarmeProviderImpl implements PagarmeProvider {
 		const res = await this.get(`customers/${input.customerId}/cards/${input.cardId}`);
 
 		if (res.statusCode !== 200) {
-			console.log(`${moment().format('DD/MM/YYYY HH:mm:ss')} - card obtain failed: ${JSON.stringify(res.data, null, 2)}`);
+			this.logger.error(`card obtain failed: ${JSON.stringify(res.data, null, 2)}`);
 			return null;
 		}
 
@@ -102,9 +117,10 @@ export class PagarmeProviderImpl implements PagarmeProvider {
 	async obtainCharge(chargeId: string): Promise<ObtainChargeOutput | null> {
 		const res = await this.get(`charges/${chargeId}`);
 
+		this.logger.info(`charge obtained: ${JSON.stringify(res.data, null, 2)}`);
 
 		if (res.statusCode !== 200) {
-			console.log(`${moment().format('DD/MM/YYYY HH:mm:ss')} - charge obtain failed: ${JSON.stringify(res.data, null, 2)}`);
+			this.logger.error(`charge obtain failed: ${JSON.stringify(res.data, null, 2)}`);
 			return null;
 		}
 
@@ -121,7 +137,7 @@ export class PagarmeProviderImpl implements PagarmeProvider {
 		const res = await this.delete(`customers/${customerId}/cards/${cardId}`, {});
 
 		if (res.statusCode !== 200) {
-			console.log(`${moment().format('DD/MM/YYYY HH:mm:ss')} - subscription creation failed: ${JSON.stringify(res.data, null, 2)}`);
+			this.logger.error(`card deletion failed: ${JSON.stringify(res.data, null, 2)}`);
 			return 'FAILED';
 		}
 
@@ -129,7 +145,7 @@ export class PagarmeProviderImpl implements PagarmeProvider {
 	}
 
 	async createSubscription(order: CreateSubscriptionInput): Promise<CreateSubscriptionOutput> {
-		const res = await this.post(`/subscriptions`, {
+		const params = {
 			...order,
 			installments: 1,
 			payment_method: 'credit_card',
@@ -137,10 +153,16 @@ export class PagarmeProviderImpl implements PagarmeProvider {
 			interval: 'month',
 			interval_count: 1,
 			billing_type: 'prepaid',
-		});
+		}
 
+		this.logger.info(`creating subscription: ${JSON.stringify(params, null, 2)}`);
+
+		const res = await this.post(`/subscriptions`, params);
+
+		this.logger.info(`create subscription res: ${JSON.stringify(res.data, null, 2)}`);
+		
 		if (res.statusCode !== 200) {
-			console.log(`${moment().format('DD/MM/YYYY HH:mm:ss')} - card deletion failed: ${JSON.stringify(res.data, null, 2)}`);
+			this.logger.error(`create subscription res: ${JSON.stringify(res.data, null, 2)}`);
 			return {
 				status: 'FAILED',
 			}
@@ -156,7 +178,14 @@ export class PagarmeProviderImpl implements PagarmeProvider {
 		const res = await this.delete(`/subscriptions/${subscriptionId}`, {});
 
 		if (res.statusCode !== 200) {
-			console.log(`${moment().format('DD/MM/YYYY HH:mm:ss')} - subscription deletion failed: ${JSON.stringify(res.data, null, 2)}`);
+			this.logger.error(`subscription deletion failed: ${JSON.stringify(res.data, null, 2)}`);
+
+			const isCanceled = res.data.message && res.data.message.includes('is canceled');
+			if(isCanceled) {
+				return {
+					status: 'ALREADY_CANCELED',
+				}
+			}
 			return {
 				status: 'FAILED',
 			}
@@ -165,6 +194,19 @@ export class PagarmeProviderImpl implements PagarmeProvider {
 		return {
 			status: 'SUCCESS',
 		}
+	}
+
+	async getSubscription(subscriptionId: string): Promise<GetSubscriptionOutput | null> {
+		const res = await this.get(`/subscriptions/${subscriptionId}`);
+
+		this.logger.info(`get subscription res: ${JSON.stringify(res.data, null, 2)}`);
+
+		if (res.statusCode !== 200) {
+			this.logger.error(`subscription obtain failed: ${JSON.stringify(res.data, null, 2)}`);
+			return null;
+		}
+
+		return res.data as GetSubscriptionOutput;
 	}
 
 	private async get(relativeUrl: string): Promise<ApiResponse> {

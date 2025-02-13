@@ -19,8 +19,8 @@ it('should throw INVALID_CREDENTIALS if email is not found', async () => {
     password: '123456',
   })).rejects.toMatchObject(new UnauthorizedError('INVALID_CREDENTIALS'));
 
-  expect(usersRepository.findByEmail).toBeCalledTimes(1);
-  expect(usersRepository.findByEmail).toBeCalledWith('test@email.com');
+  expect(usersRepository.findByEmail).toHaveBeenCalledTimes(1);
+  expect(usersRepository.findByEmail).toHaveBeenCalledWith('test@email.com');
 });
 
 it('should throw INVALID_CREDENTIALS if password does not match', async () => {
@@ -32,15 +32,21 @@ it('should throw INVALID_CREDENTIALS if password does not match', async () => {
     password: '123456',
   })).rejects.toMatchObject(new UnauthorizedError('INVALID_CREDENTIALS'));
 
-  expect(usersRepository.findByEmail).toBeCalledTimes(1);
-  expect(usersRepository.findByEmail).toBeCalledWith('test@email.com');
+  expect(usersRepository.findByEmail).toHaveBeenCalledTimes(1);
+  expect(usersRepository.findByEmail).toHaveBeenCalledWith('test@email.com');
 
-  expect(hashProvider.compareHash).toBeCalledTimes(1);
-  expect(hashProvider.compareHash).toBeCalledWith('123456', undefined);
+  expect(hashProvider.compareHash).toHaveBeenCalledTimes(1);
+  expect(hashProvider.compareHash).toHaveBeenCalledWith('123456', undefined);
 });
 
 it('should return a token if credentials are valid', async () => {
-  jest.spyOn(usersRepository, 'findByEmail').mockResolvedValue({ id: uuidv4(), password: uuidv4() } as User);
+  jest.spyOn(usersRepository, 'findByEmail').mockResolvedValue({ 
+    id: uuidv4(), 
+    password: uuidv4(),
+    canUsePlatformUntil: async () => {
+      return new Date();
+    },
+  } as User);
   jest.spyOn(hashProvider, 'compareHash').mockResolvedValue(true);
   jest.spyOn(User, 'generateUserToken').mockResolvedValue(uuidv4());
 
@@ -49,14 +55,14 @@ it('should return a token if credentials are valid', async () => {
     password: '123456',
   });
 
-  expect(usersRepository.findByEmail).toBeCalledTimes(1);
-  expect(usersRepository.findByEmail).toBeCalledWith('test@email.com');
+  expect(usersRepository.findByEmail).toHaveBeenCalledTimes(1);
+  expect(usersRepository.findByEmail).toHaveBeenCalledWith('test@email.com');
 
-  expect(hashProvider.compareHash).toBeCalledTimes(1);
-  expect(hashProvider.compareHash).toBeCalledWith('123456', expect.any(String));
+  expect(hashProvider.compareHash).toHaveBeenCalledTimes(1);
+  expect(hashProvider.compareHash).toHaveBeenCalledWith('123456', expect.any(String));
 
-  expect(User.generateUserToken).toBeCalledTimes(1);
-  expect(User.generateUserToken).toBeCalledWith({ id: expect.any(String) });
+  expect(User.generateUserToken).toHaveBeenCalledTimes(1);
+  expect(User.generateUserToken).toHaveBeenCalledWith({ id: expect.any(String) });
 
   expect(res).toMatchObject({ auth: { token: expect.any(String) } });
 });

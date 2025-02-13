@@ -67,7 +67,6 @@ describe('createCustomer', () => {
 describe('createCard', () => {
 	it('should create a card', async () => {
 		const customer = await pagarmeProvider.createCustomer(sampleCustomer);
-		console.log(customer);
 
 		const res = await pagarmeProvider.createCard(customer!.id, sampleCard);
 
@@ -268,3 +267,155 @@ describe('obtainCharge', () => {
 		});
 	});
 });
+
+describe('createSubscription', () => {
+	it('should return FAILED if pagarme return errors', async () => {
+		jest.spyOn(apiProvider, 'post').mockResolvedValueOnce({
+			statusCode: 400,
+			data: {},
+		});
+
+		const res = await pagarmeProvider.createSubscription({
+			card_id: 'card_test',
+			customer_id: 'cus_test',
+			description: 'Test',
+			installments: 1,
+			interval_count: 1,
+			pricing_scheme: {
+				minimum_price: 100,
+				price: 100,
+				scheme_type: 'unit',
+			},
+			quantity: 1,
+		});
+
+		expect(res).toEqual({
+			status: 'FAILED'
+		});
+
+		expect(apiProvider.post).toHaveBeenCalledTimes(1);
+		expect(apiProvider.post).toHaveBeenCalledWith(expect.stringContaining('/subscriptions'), {
+			card_id: 'card_test',
+			customer_id: 'cus_test',
+			description: 'Test',
+			installments: 1,
+			interval: 'month',
+			interval_count: 1,
+			payment_method: 'credit_card',
+			pricing_scheme: {
+				minimum_price: 100,
+				price: 100,
+				scheme_type: 'unit',
+			},
+			quantity: 1,
+			billing_type: 'prepaid',
+			currency: 'BRL'
+		}, { Authorization: expect.any(String)});
+	})
+
+	it('should create a subscription', async () => {
+		const customer = await pagarmeProvider.createCustomer(sampleCustomer);
+		const card = await pagarmeProvider.createCard(customer!.id, sampleCard);
+
+		const res = await pagarmeProvider.createSubscription({
+			card_id: card!.id,
+			customer_id: customer!.id,
+			description: 'Test',
+			installments: 1,
+			interval_count: 1,
+			pricing_scheme: {
+				minimum_price: 100,
+				price: 100,
+				scheme_type: 'unit',
+			},
+			quantity: 1,
+		});
+
+		expect(res).toEqual({
+			status: 'SUCCESS',
+			subscription_id: expect.any(String),
+		});
+	});
+})
+
+describe('deleteSubscription', () => {
+	it('should return FAILED if pagarme return errors', async () => {
+		jest.spyOn(apiProvider, 'delete').mockResolvedValueOnce({
+			statusCode: 400,
+			data: {},
+		});
+
+		const res = await pagarmeProvider.deleteSubscription('sub_test');
+
+		expect(res).toEqual({
+			status: 'FAILED'
+		});
+
+		expect(apiProvider.delete).toHaveBeenCalledTimes(1);
+		expect(apiProvider.delete).toHaveBeenCalledWith(expect.stringContaining('/subscriptions/sub_test'), {}, { Authorization: expect.any(String)});
+	})
+
+	it('should delete a subscription', async () => {
+		const customer = await pagarmeProvider.createCustomer(sampleCustomer);
+		const card = await pagarmeProvider.createCard(customer!.id, sampleCard);
+
+		const subscription = await pagarmeProvider.createSubscription({
+			card_id: card!.id,
+			customer_id: customer!.id,
+			description: 'Test',
+			installments: 1,
+			interval_count: 1,
+			pricing_scheme: {
+				minimum_price: 100,
+				price: 100,
+				scheme_type: 'unit',
+			},
+			quantity: 1,
+		});
+
+		const res = await pagarmeProvider.deleteSubscription(subscription.subscription_id!);
+
+		expect(res).toEqual({
+			status: 'SUCCESS'
+		});
+	});
+})
+
+describe('getSubscription', () => {
+	it('should return null if pagarme return errors', async () => {
+		jest.spyOn(apiProvider, 'get').mockResolvedValueOnce({
+			statusCode: 400,
+			data: {},
+		});
+
+		const res = await pagarmeProvider.getSubscription('sub_test');
+
+		expect(res).toBeNull();
+	});
+
+	it('should obtain a subscription', async () => {
+		const customer = await pagarmeProvider.createCustomer(sampleCustomer);
+		const card = await pagarmeProvider.createCard(customer!.id, sampleCard);
+
+		const subscription = await pagarmeProvider.createSubscription({
+			card_id: card!.id,
+			customer_id: customer!.id,
+			description: 'Test',
+			installments: 1,
+			interval_count: 1,
+			pricing_scheme: {
+				minimum_price: 100,
+				price: 100,
+				scheme_type: 'unit',
+			},
+			quantity: 1,
+		});
+
+		const res = await pagarmeProvider.getSubscription(subscription.subscription_id!);
+
+		expect(res).toMatchObject({
+			id: subscription.subscription_id,
+			status: 'active',
+		});
+	});
+})
