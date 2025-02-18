@@ -30,6 +30,9 @@ export class Environment {
 		PAGARME_API_KEY: yup.string().required(),
 
 		APPLICATION_LOG_LEVEL: yup.string().optional().oneOf(['debug', 'info', 'warn', 'error', 'silent', 'fatal', 'trace']).default('info'),
+
+		GOOGLE_CLIENT_ID: yup.string().required(),
+		GOOGLE_CLIENT_SECRET_KEY: yup.string().required(),
   });
 
   static vars: InferType<typeof Environment.varsSchema>;
