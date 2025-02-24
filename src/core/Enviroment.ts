@@ -30,6 +30,9 @@ export class Environment {
 		PAGARME_API_KEY: yup.string().required(),
 
 		APPLICATION_LOG_LEVEL: yup.string().optional().oneOf(['debug', 'info', 'warn', 'error', 'silent', 'fatal', 'trace']).default('info'),
+
+		FACEBOOK_GRAPH_API_URL: yup.string().required(),
+		FACEBOOK_ACCESS_TOKEN: yup.string().required(),
   });
 
   static vars: InferType<typeof Environment.varsSchema>;

@@ -209,7 +209,7 @@ export class Utils {
 		return strWithoutSpecials;
 	}
 
-	public static buildQueryParams(data: JsObject): string {
+	public static buildQueryParams(data?: JsObject): string {
 		if (!data || Object.keys(data).length === 0) {
 			return '';
 		}

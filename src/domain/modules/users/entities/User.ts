@@ -1,9 +1,10 @@
 import moment from "moment";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { find } from "../../../../core/DependencyInjection";
 import { JwtProvider, jwtProviderAlias } from "../../../../providers/jwt/JwtProvider";
 import { PagarmeProvider, pagarmeProviderAlias } from "../../../../providers/pagarme/PagarmeProvider";
 import { MomentUtils } from "../../../../core/MomentUtils";
+import { FacebookCredential } from "./FacebookCredential";
 
 
 export type UserRole = 'user' | 'admin';
@@ -51,6 +52,9 @@ export class User {
 
   @Column({ type: 'varchar', length: 255, nullable: true, default: null })
   subscriptionStatus: UserSubscriptionStatus | null;
+
+  @OneToMany(() => FacebookCredential, facebookCredential => facebookCredential.user)
+  facebookCredentials: FacebookCredential[];
 
   get isOnTrial(): boolean {
     return moment(this.createdAt).add(7, 'days').isAfter(moment());
