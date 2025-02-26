@@ -11,18 +11,26 @@ export type AuthUserUseCaseInput = {
 }
 
 export type AuthUserUseCaseOutput = {
-  auth: {
-    token: string;
-  };
+  auth: AuthUserUseCaseAuthData;
   name: string;
   email: string;
   phone: string;
   isOnTrial: boolean;
-  daysRemainingForTrial?: number;
   packageId: string | null;
   verified2fa: boolean;
   subscriptionStatus: UserSubscriptionStatus | null;
   canUsePlatformUntil: Date | null;
+  facebookAccount: AuthUserUseCaseFacebookAccount | null;
+  daysRemainingForTrial?: number;
+}
+
+type AuthUserUseCaseAuthData = {
+  token: string;
+}
+
+type AuthUserUseCaseFacebookAccount = {
+  userIdOnFacebook: string;
+  expiresIn: Date;
 }
 
 @singleton()
@@ -63,6 +71,10 @@ export class AuthUserUseCase implements UseCase<AuthUserUseCaseInput, AuthUserUs
       verified2fa: user.verified2fa,
       subscriptionStatus: user.subscriptionStatus,
       canUsePlatformUntil: await user.canUsePlatformUntil(),
+      facebookAccount: user.facebookCredential ? {
+        userIdOnFacebook: user.facebookCredential?.userIdOnFacebook,
+        expiresIn: user.facebookCredential?.expiresIn,
+      } : null,
     }
   }
 }

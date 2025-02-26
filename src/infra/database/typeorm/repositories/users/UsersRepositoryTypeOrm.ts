@@ -21,7 +21,12 @@ export class UsersRepositoryTypeOrm implements UsersRepository {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return this.repository.findOneBy({ email });
+    return this.repository.findOne({
+      where: {
+        email,
+      },
+      relations: { facebookCredentials: true },
+    });
   }
 
   async updateById(id: string, data: UpdateUserDTO): Promise<void> {

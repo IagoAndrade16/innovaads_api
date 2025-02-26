@@ -29,6 +29,8 @@ import { TemplaterProvider, templaterProviderAlias } from "../providers/template
 import { TemplaterHandlebarsImpl } from "../providers/templater/implementations/TemplaterHandlebarsImpl";
 import { TrendsProvider, trendsProviderAlias } from "../providers/trends/TrendsProvider";
 import { TrendsProviderImpl } from "../providers/trends/implementations/TrendsProviderImpl";
+import { FacebookCredentialsRepository, facebookCredentialsRepositoryAlias } from "../domain/modules/users/repositories/FacebookCredetialsRepository";
+import { FacebookCredentialsRepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/FacebookCredentialsRepositoryTypeOrm";
 
 
 
@@ -50,6 +52,7 @@ export class DependencyInjection {
     container.registerSingleton<PagarmeProvider>(pagarmeProviderAlias, PagarmeProviderImpl);
     container.registerSingleton<UsersForgotPassword2FARepository>(usersForgotPassword2FARepositoryAlias, UsersForgotPassword2FARepositoryTypeOrm);
     container.registerSingleton<SubscriptionsRepository>(subscriptionsRepositoryAlias, SubscriptionsRepositoryTypeOrm);
+    container.registerSingleton<FacebookCredentialsRepository>(facebookCredentialsRepositoryAlias, FacebookCredentialsRepositoryTypeOrm);
   }
 }
 

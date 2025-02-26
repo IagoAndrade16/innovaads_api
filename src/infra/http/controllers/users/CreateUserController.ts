@@ -10,7 +10,7 @@ import { PhoneNumber } from "../../../../domain/modules/users/entities/value-obj
 export class CreateUserController implements Controller {
   constructor (
     @inject(CreateUserUseCase)
-    private readonly createUserUseCase: CreateUserUseCase,
+    private readonly usecase: CreateUserUseCase,
   ) {}
 
   private bodySchema = yup.object().shape({
@@ -25,7 +25,7 @@ export class CreateUserController implements Controller {
   async handle(req: Request, res: Response): Promise<void> {
     const body = await this.bodySchema.validate(req.body, { abortEarly: false });
 
-    await this.createUserUseCase.execute({
+    await this.usecase.execute({
       ...body,
     });
 
