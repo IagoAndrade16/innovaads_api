@@ -29,8 +29,8 @@ type AuthUserUseCaseAuthData = {
 }
 
 type AuthUserUseCaseFacebookAccount = {
-  userIdOnFacebook: string;
-  expiresIn: Date;
+  userIdOnFacebook: string | null;
+  expiresIn: Date | null;
 }
 
 @singleton()

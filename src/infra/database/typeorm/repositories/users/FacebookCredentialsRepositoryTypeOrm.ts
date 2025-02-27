@@ -23,12 +23,18 @@ export class FacebookCredentialsRepositoryTypeOrm implements FacebookCredentials
     return this.repository.findOne({ 
       where: {
         userId,
-        deleted: false
+        deleted: false,
       }
     });
   }
 
   async deleteByUserId(userId: string): Promise<void> {
-    await this.repository.update({ userId }, { deleted: true, deletedAt: DateUtils.getNowByTimezone() });
+    await this.repository.update({ userId, deleted: false }, { 
+      deleted: true, 
+      deletedAt: DateUtils.getNowByTimezone(),
+      accessToken: null,
+      expiresIn: null,
+      userIdOnFacebook: null,
+    });
   }
 }

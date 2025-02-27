@@ -11,13 +11,13 @@ export class FacebookCredential {
   userId: string;
 
   @Column({ type: 'varchar', length: 255 })
-  userIdOnFacebook: string;
+  userIdOnFacebook: string | null;
 
-  @Column({ type: 'timestamp', nullable: false })
-  expiresIn: Date;
+  @Column({ type: 'timestamp', nullable: true })
+  expiresIn: Date | null;
 
   @Column({ type: 'text' })
-  accessToken: string;
+  accessToken: string | null;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
