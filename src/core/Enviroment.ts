@@ -35,7 +35,10 @@ export class Environment {
 		FACEBOOK_ACCESS_TOKEN: yup.string().required(),
 		
 		GOOGLE_CLIENT_ID: yup.string().required(),
+		GOOGLE_BASE_URL: yup.string().required(),
+		GOOGLE_OAUTH_BASE_URL: yup.string().required(),
 		GOOGLE_CLIENT_SECRET_KEY: yup.string().required(),
+		GOOGLE_DEVELOPER_TOKEN: yup.string().required(),
   });
 
   static vars: InferType<typeof Environment.varsSchema>;

@@ -5,6 +5,7 @@ import { JwtProvider, jwtProviderAlias } from "../../../../providers/jwt/JwtProv
 import { PagarmeProvider, pagarmeProviderAlias } from "../../../../providers/pagarme/PagarmeProvider";
 import { DateUtils } from "../../../../core/DateUtils";
 import { FacebookCredential } from "./FacebookCredential";
+import { GoogleCredential } from "./GoogleCredential";
 
 
 export type UserRole = 'user' | 'admin';
@@ -55,6 +56,9 @@ export class User {
 
   @OneToMany(() => FacebookCredential, facebookCredential => facebookCredential.user)
   facebookCredentials: FacebookCredential[];
+
+  @OneToMany(() => GoogleCredential, googleCredential => googleCredential.user)
+  googleCredentials: GoogleCredential[];
 
   get isOnTrial(): boolean {
     return moment(this.createdAt).add(7, 'days').isAfter(moment());

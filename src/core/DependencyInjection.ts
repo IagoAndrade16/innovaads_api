@@ -31,6 +31,10 @@ import { TrendsProvider, trendsProviderAlias } from "../providers/trends/TrendsP
 import { TrendsProviderImpl } from "../providers/trends/implementations/TrendsProviderImpl";
 import { FacebookCredentialsRepository, facebookCredentialsRepositoryAlias } from "../domain/modules/users/repositories/FacebookCredetialsRepository";
 import { FacebookCredentialsRepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/FacebookCredentialsRepositoryTypeOrm";
+import { GoogleAdsApiProvider, googleAdsApiProviderAlias } from "../providers/google/GoogleAdsApiProvider";
+import { GoogleAdsApiProviderImpl } from "../providers/google/implementations/GoogleAdsApiProviderImpl";
+import { GoogleAuthProvider, googleAuthProviderAlias } from "../providers/google/GoogleAuthProvider";
+import { GoogleAuthProviderImpl } from "../providers/google/implementations/GoogleAuthProviderImpl";
 
 
 
@@ -53,6 +57,8 @@ export class DependencyInjection {
     container.registerSingleton<UsersForgotPassword2FARepository>(usersForgotPassword2FARepositoryAlias, UsersForgotPassword2FARepositoryTypeOrm);
     container.registerSingleton<SubscriptionsRepository>(subscriptionsRepositoryAlias, SubscriptionsRepositoryTypeOrm);
     container.registerSingleton<FacebookCredentialsRepository>(facebookCredentialsRepositoryAlias, FacebookCredentialsRepositoryTypeOrm);
+    container.registerSingleton<GoogleAdsApiProvider>(googleAdsApiProviderAlias, GoogleAdsApiProviderImpl);
+    container.registerSingleton<GoogleAuthProvider>(googleAuthProviderAlias, GoogleAuthProviderImpl);
   }
 }
 
