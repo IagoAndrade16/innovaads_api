@@ -31,6 +31,8 @@ import { TrendsProvider, trendsProviderAlias } from "../providers/trends/TrendsP
 import { TrendsProviderImpl } from "../providers/trends/implementations/TrendsProviderImpl";
 import { FacebookCredentialsRepository, facebookCredentialsRepositoryAlias } from "../domain/modules/users/repositories/FacebookCredetialsRepository";
 import { FacebookCredentialsRepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/FacebookCredentialsRepositoryTypeOrm";
+import { FacebookGraphApiAds, facebookGraphApiAdsAlias } from "../providers/facebook/FacebookGraphApiAds";
+import { FacebookGraphApiAdsImpl } from "../providers/facebook/implementations/FacebookGraphApiAdsImpl";
 
 
 
@@ -53,6 +55,7 @@ export class DependencyInjection {
     container.registerSingleton<UsersForgotPassword2FARepository>(usersForgotPassword2FARepositoryAlias, UsersForgotPassword2FARepositoryTypeOrm);
     container.registerSingleton<SubscriptionsRepository>(subscriptionsRepositoryAlias, SubscriptionsRepositoryTypeOrm);
     container.registerSingleton<FacebookCredentialsRepository>(facebookCredentialsRepositoryAlias, FacebookCredentialsRepositoryTypeOrm);
+    container.registerSingleton<FacebookGraphApiAds>(facebookGraphApiAdsAlias, FacebookGraphApiAdsImpl);
   }
 }
 
