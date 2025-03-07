@@ -11,7 +11,7 @@ export abstract class GoogleAuthProvider {
 
   abstract getAuthToken(data: GetAuthTokenRequest): Promise<GetAuthTokenResponse>;
 
-  protected async post(endpoint: string, data: JsObject): Promise<ApiResponse> {
+  protected async post<T>(endpoint: string, data: JsObject): Promise<ApiResponse> {
     const apiProvider = find<ApiProviderAxios>(apiProviderAxiosAlias);
 
     const res = await apiProvider.post(
@@ -20,7 +20,10 @@ export abstract class GoogleAuthProvider {
       this.headers()
     );
 
-    return res;
+    return {
+      statusCode: res.statusCode,
+      data: res.data as T,
+    };
   } 
 
   protected async get(endpoint: string, data: JsObject): Promise<ApiResponse> {

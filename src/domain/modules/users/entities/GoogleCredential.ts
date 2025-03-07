@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./User";
+import { DateUtils } from "../../../../core/DateUtils";
 
 @Entity('google_credentials')
 export class GoogleCredential {
@@ -11,6 +12,9 @@ export class GoogleCredential {
 
   @Column({ type: 'timestamp', nullable: true })
   expiresIn: Date | null;
+
+  @Column({ type: 'timestamp', nullable: true })
+  expiresRefreshIn: Date | null;
 
   @Column({ type: 'text' })
   accessToken: string | null;
@@ -32,4 +36,8 @@ export class GoogleCredential {
 
   @ManyToOne(() => User, user => user.googleCredentials)
   user: User;
+
+  static generateExpirationDate(expiresIn: number): Date {
+    return DateUtils.addSecondsToDate(new Date(), expiresIn);
+  }
 }

@@ -3,6 +3,11 @@ export type GetAuthTokenRequest = {
 }
 
 export type GetAuthTokenResponse = {
+  status: 'SUCCESS' | 'BAD_REQUEST';
+  data: GetAuthTokenRequestResponse | null;
+}
+
+export type GetAuthTokenRequestResponse = {
   access_token: string;
   expires_in: number;
   scope: string;
