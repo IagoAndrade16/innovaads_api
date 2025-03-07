@@ -16,9 +16,6 @@ export class FacebookCredential {
   @Column({ type: 'timestamp', nullable: true })
   expiresIn: Date | null;
 
-  @Column({ type: 'timestamp', nullable: true })
-  expiresRefreshIn: Date | null;
-
   @Column({ type: 'text' })
   accessToken: string | null;
 
