@@ -37,6 +37,8 @@ import { GoogleAuthProvider, googleAuthProviderAlias } from "../providers/google
 import { GoogleAuthProviderImpl } from "../providers/google/implementations/GoogleAuthProviderImpl";
 import { GoogleCredentialsRepository, googleCredentialsRepositoryAlias } from "../domain/modules/users/repositories/GoogleCredentialsRepository";
 import { GoogleCredentialsRepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/GoogleCrendentialsRepositoryTypeOrm";
+import { FacebookGraphApiAds, facebookGraphApiAdsAlias } from "../providers/facebook/FacebookGraphApiAds";
+import { FacebookGraphApiAdsImpl } from "../providers/facebook/implementations/FacebookGraphApiAdsImpl";
 
 
 
@@ -62,6 +64,7 @@ export class DependencyInjection {
     container.registerSingleton<GoogleAdsApiProvider>(googleAdsApiProviderAlias, GoogleAdsApiProviderImpl);
     container.registerSingleton<GoogleAuthProvider>(googleAuthProviderAlias, GoogleAuthProviderImpl);
     container.registerSingleton<GoogleCredentialsRepository>(googleCredentialsRepositoryAlias, GoogleCredentialsRepositoryTypeOrm);
+    container.registerSingleton<FacebookGraphApiAds>(facebookGraphApiAdsAlias, FacebookGraphApiAdsImpl);
   }
 }
 

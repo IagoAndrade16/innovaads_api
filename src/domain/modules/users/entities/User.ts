@@ -78,23 +78,23 @@ export class User {
   }
 
   async needsToBuyPlan(): Promise<boolean> {
-		if(this.subscriptionStatus === 'active') return true;
+		if(this.subscriptionStatus === 'active') return false;
 
 		if(this.subscriptionStatus === 'canceled') {
 			const nowFormatted = DateUtils.formatDate(new Date(), 'YYYY-MM-DD');
       const canUsePlatformUntil = await this.canUsePlatformUntil();
 			const canUsePlatformUntilFormatted = DateUtils.formatDate(canUsePlatformUntil, 'YYYY-MM-DD');
-			if(canUsePlatformUntilFormatted > nowFormatted) return true;
-			return false;
+			if(canUsePlatformUntilFormatted > nowFormatted) return false;
+			return true;
 		}
 
 
 		if(!this.subscriptionStatus) {
-			if(this.daysRemainingForTrial > 0) return true;
-			return false;
+			if(this.daysRemainingForTrial > 0) return false;
+			return true;
 		}
 
-		return false;
+		return true;
   }
 
   public async canUsePlatformUntil(): Promise<Date | null> {

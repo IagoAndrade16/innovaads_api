@@ -4,14 +4,25 @@ import { JsObject } from "../../../@types/JsObject";
 import { Environment } from "../../../core/Enviroment";
 import { Utils } from "../../../core/Utils";
 import { GraphApiObject } from "../@types/FacebookGraphApiTypes";
-import { FacebookGraphApiAds } from "../FacebookGraphApiAds";
+import { FacebookGraphApiAds, FacebookGraphApiAdsAuthorization } from "../FacebookGraphApiAds";
+import { FetchFacebookAdsInput, FetchFacebookAdsOutput } from "../@types/FacebookGraphApiAdsTypes";
 
 @injectable()
 export class FacebookGraphApiAdsImpl extends FacebookGraphApiAds {
-  public buildUrl(endpoint: string, data?: GraphApiObject): string {
+
+  async fetchCreatives(options: FetchFacebookAdsInput, auth: FacebookGraphApiAdsAuthorization): Promise<FetchFacebookAdsOutput> {
+    const url = this.buildUrl("ads_archive", auth, options);
+    const response = await this.get(url, options, auth);
+    
+    return {
+      ads: response.data,
+    };
+  }
+
+  public buildUrl(endpoint: string, auth: FacebookGraphApiAdsAuthorization, data?: GraphApiObject): string {
     const params = {
       ...data,
-      access_token: Environment.vars.FACEBOOK_ACCESS_TOKEN,
+      access_token: auth.access_token,
     }
 
     const queryParams = Utils.buildQueryParams(params.filters);

@@ -48,8 +48,8 @@ describe('save', () => {
       ...savedCredential,
       accessToken: 'new_token',
       expiresIn: FacebookCredential.generateExpirationDate(3600),
-      userId: credential.userId,
-      userIdOnFacebook: 'valid_user_id_on_facebook'
+      userId: 'new_user_id',
+      userIdOnFacebook: 'new_user_id_on_facebook'
     });
 
     await Database.source.getRepository(FacebookCredential).delete({ id: updatedCredential.id });
