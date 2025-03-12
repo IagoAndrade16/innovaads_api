@@ -12,6 +12,7 @@ export class ConnectGoogleAccountController implements Controller {
     @inject(ConnectGoogleAccountUseCase)
     private readonly usecase: ConnectGoogleAccountUseCase,
   ) {}
+  
   private querySchema = yup.object().shape({
     code: yup.string().required(),
   });

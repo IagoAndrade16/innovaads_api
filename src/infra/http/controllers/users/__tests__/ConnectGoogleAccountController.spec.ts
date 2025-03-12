@@ -14,14 +14,14 @@ beforeAll(async () => {
 
 describe('Schema Validation', () => {
   it('should return 401 if no token is provided', async () => {
-    const res = await request(app).get(route)
+    const res = await request(app).post(route)
 
     expect(res.status).toBe(401);
   });
 
   it('should return 400 if invalid token is provided', async () => {
     const res = await request(app)
-      .get(route)
+      .post(route)
       .set({
         Authorization: authToken,
       });
@@ -48,7 +48,7 @@ it('should call usecase', async () => {
   } as ConnectGoogleAccountUseCaseOutput);
 
   const res = await request(app)
-    .get(route)
+    .post(route)
     .set({
       Authorization: authToken,
     })

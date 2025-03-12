@@ -6,5 +6,5 @@ import { DisconnectGoogleAccountController } from "../controllers/users/Disconne
 
 export const usersGoogleAccountRouter = Router();
 
-usersGoogleAccountRouter.get('/connect', _ensureAuthenticated, (req, res) => find(ConnectGoogleAccountController).handle(req, res));
-usersGoogleAccountRouter.get('/disconnect', _ensureAuthenticated, (req, res) => find(DisconnectGoogleAccountController).handle(req, res));
+usersGoogleAccountRouter.post('/connect', _ensureAuthenticated, (req, res) => find(ConnectGoogleAccountController).handle(req, res));
+usersGoogleAccountRouter.delete('/disconnect', _ensureAuthenticated, (req, res) => find(DisconnectGoogleAccountController).handle(req, res));

@@ -14,7 +14,7 @@ beforeAll(async () => {
 
 describe('Schema Validation', () => {
   it('should return 401 if no token is provided', async () => {
-    const res = await request(app).get(route)
+    const res = await request(app).delete(route)
 
     expect(res.status).toBe(401);
   });
@@ -24,7 +24,7 @@ it('should call usecase', async () => {
   jest.spyOn(usecase, 'execute').mockResolvedValue();
 
   const res = await request(app)
-    .get(route)
+    .delete(route)
     .set({
       Authorization: authToken,
     });

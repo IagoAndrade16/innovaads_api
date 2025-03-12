@@ -77,6 +77,11 @@ export class User {
     return this.facebookCredentials.filter(credential => !credential.deleted)[0];
   }
 
+  get googleCredential(): GoogleCredential | null {
+    if(!this.googleCredentials) return null;
+    return this.googleCredentials.filter(credential => !credential.deleted)[0];
+  }
+
   async needsToBuyPlan(): Promise<boolean> {
 		if(this.subscriptionStatus === 'active') return false;
 
