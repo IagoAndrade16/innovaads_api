@@ -39,6 +39,10 @@ import { GoogleCredentialsRepository, googleCredentialsRepositoryAlias } from ".
 import { GoogleCredentialsRepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/GoogleCrendentialsRepositoryTypeOrm";
 import { FacebookGraphApiAds, facebookGraphApiAdsAlias } from "../providers/facebook/FacebookGraphApiAds";
 import { FacebookGraphApiAdsImpl } from "../providers/facebook/implementations/FacebookGraphApiAdsImpl";
+import { NotificationsRepository, notificationsRepositoryAlias } from "../domain/modules/notifications/repositories/NotificationsRepository";
+import { NotificationsRepositoryTypeOrm } from "../infra/database/typeorm/repositories/notifications/NotificationsRepositortTypeOrm";
+import { UsersNotificationsRepository, usersNotificationsRepositoryAlias } from "../domain/modules/users/repositories/UsersNotificationsRepository";
+import { UsersNotificationsRepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/UsersNotificationsRepositoryTypeOrm";
 
 
 
@@ -65,6 +69,8 @@ export class DependencyInjection {
     container.registerSingleton<GoogleAuthProvider>(googleAuthProviderAlias, GoogleAuthProviderImpl);
     container.registerSingleton<GoogleCredentialsRepository>(googleCredentialsRepositoryAlias, GoogleCredentialsRepositoryTypeOrm);
     container.registerSingleton<FacebookGraphApiAds>(facebookGraphApiAdsAlias, FacebookGraphApiAdsImpl);
+    container.registerSingleton<NotificationsRepository>(notificationsRepositoryAlias, NotificationsRepositoryTypeOrm);
+    container.registerSingleton<UsersNotificationsRepository>(usersNotificationsRepositoryAlias, UsersNotificationsRepositoryTypeOrm);
   }
 }
 

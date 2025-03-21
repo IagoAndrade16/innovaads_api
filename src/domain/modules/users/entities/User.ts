@@ -6,7 +6,7 @@ import { PagarmeProvider, pagarmeProviderAlias } from "../../../../providers/pag
 import { DateUtils } from "../../../../core/DateUtils";
 import { FacebookCredential } from "./FacebookCredential";
 import { GoogleCredential } from "./GoogleCredential";
-
+import { UserNotification } from "./UserNotification";
 
 export type UserRole = 'user' | 'admin';
 export type UserSubscriptionStatus = 'active' | 'canceled' | 'failed';
@@ -60,6 +60,9 @@ export class User {
   @OneToMany(() => GoogleCredential, googleCredential => googleCredential.user)
   googleCredentials: GoogleCredential[];
 
+  @OneToMany(() => UserNotification, (userNotification) => userNotification.user)
+  userNotifications: UserNotification[];
+
   get isOnTrial(): boolean {
     return moment(this.createdAt).add(7, 'days').isAfter(moment());
   }
@@ -80,6 +83,25 @@ export class User {
   get googleCredential(): GoogleCredential | null {
     if(!this.googleCredentials) return null;
     return this.googleCredentials.filter(credential => !credential.deleted)[0];
+  }
+
+  get latestUserNotificationsRead(): UserNotification[] {
+    const userNotificationsMap = new Map<string, UserNotification>();    
+    const userNotificationsAlreadyReadFiltered = this.userNotifications.filter(notification => notification.alreadyRead);
+
+    userNotificationsAlreadyReadFiltered.forEach(notification => {
+      const existingNotification = userNotificationsMap.get(notification.notificationId);
+
+      if (!existingNotification || moment(notification.createdAt).isAfter(moment(existingNotification.createdAt))) {
+        userNotificationsMap.set(notification.notificationId, notification);
+      }
+    });
+
+    return Array.from(userNotificationsMap.values());
+  }
+
+  static isExpired(date: Date): boolean {
+    return moment().isAfter(moment(date));
   }
 
   async needsToBuyPlan(): Promise<boolean> {

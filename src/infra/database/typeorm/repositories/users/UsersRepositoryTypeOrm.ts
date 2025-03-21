@@ -19,7 +19,7 @@ export class UsersRepositoryTypeOrm implements UsersRepository {
   async findById(id: string): Promise<User | null> {
     return this.repository.findOne({ 
       where: { id },
-      relations: { googleCredentials: true, facebookCredentials: true },
+      relations: { googleCredentials: true, facebookCredentials: true, userNotifications: true },
     });
   }
 
