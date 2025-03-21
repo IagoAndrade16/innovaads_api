@@ -1,5 +1,5 @@
 import { inject, singleton } from "tsyringe";
-import { DomainDates } from "../../../../core/DomainDates";
+import { DateUtils } from "../../../../core/DateUtils";
 import { UseCase } from "../../../../core/UseCase";
 import { PagarmeProvider, pagarmeProviderAlias } from "../../../../providers/pagarme/PagarmeProvider";
 import { DomainError } from "../../../errors/DomainError";
@@ -78,7 +78,7 @@ export class GetUserBillingSummaryUseCase implements UseCase<GetUserBillingSumma
 
     if(subscription) {
       response.subscription = {
-        nextBillingAt: DomainDates.format(subscription.next_billing_at, 'DD/MM/YYYY'),
+        nextBillingAt: DateUtils.format(subscription.next_billing_at, 'DD/MM/YYYY'),
         status: subscription.status,
         card: {
           brand: subscription.card.brand,

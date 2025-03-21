@@ -43,7 +43,9 @@ export const _ensureAuthenticatedWithPlan = async (req: Request, _res: Response,
   }
 
   const payload = await jwtProvider.verify(tokenSplited) as { id?: string, subject?: string };
-  const userId = (payload.id ?? payload.subject)!;
+  if (!payload || (!payload.id && !payload.subject)) throw new UnauthorizedError('UNAUTHORIZED');
+
+  const userId = (payload?.id ?? payload?.subject)!;
   
   const usersRepository = find<UsersRepository>(usersRepositoryAlias);
   const user = await usersRepository.findById(userId);

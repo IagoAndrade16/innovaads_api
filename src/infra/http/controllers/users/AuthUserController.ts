@@ -9,7 +9,7 @@ import { UnauthorizedError } from "../../../../domain/errors/Unauthorized";
 export class AuthUserController implements Controller {
   constructor(
     @inject(AuthUserUseCase)
-    private readonly authUserUseCase: AuthUserUseCase,
+    private readonly usecase: AuthUserUseCase,
   ) {}
 
   async handle(req: Request, res: Response): Promise<void> {
@@ -19,7 +19,7 @@ export class AuthUserController implements Controller {
       throw new UnauthorizedError('INVALID_CREDENTIALS');
     }
 
-    const result = await this.authUserUseCase.execute({
+    const result = await this.usecase.execute({
       email,
       password,
     });

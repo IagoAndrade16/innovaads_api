@@ -1,9 +1,11 @@
 import moment from "moment";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { find } from "../../../../core/DependencyInjection";
 import { JwtProvider, jwtProviderAlias } from "../../../../providers/jwt/JwtProvider";
 import { PagarmeProvider, pagarmeProviderAlias } from "../../../../providers/pagarme/PagarmeProvider";
-import { MomentUtils } from "../../../../core/MomentUtils";
+import { DateUtils } from "../../../../core/DateUtils";
+import { FacebookCredential } from "./FacebookCredential";
+import { GoogleCredential } from "./GoogleCredential";
 
 
 export type UserRole = 'user' | 'admin';
@@ -52,6 +54,12 @@ export class User {
   @Column({ type: 'varchar', length: 255, nullable: true, default: null })
   subscriptionStatus: UserSubscriptionStatus | null;
 
+  @OneToMany(() => FacebookCredential, facebookCredential => facebookCredential.user)
+  facebookCredentials: FacebookCredential[];
+
+  @OneToMany(() => GoogleCredential, googleCredential => googleCredential.user)
+  googleCredentials: GoogleCredential[];
+
   get isOnTrial(): boolean {
     return moment(this.createdAt).add(7, 'days').isAfter(moment());
   }
@@ -64,24 +72,34 @@ export class User {
     return moment(this.createdAt).add(7, 'days').diff(moment(), 'days');
   }
 
+  get facebookCredential(): FacebookCredential | null {
+    if(!this.facebookCredentials) return null;
+    return this.facebookCredentials.filter(credential => !credential.deleted)[0];
+  }
+
+  get googleCredential(): GoogleCredential | null {
+    if(!this.googleCredentials) return null;
+    return this.googleCredentials.filter(credential => !credential.deleted)[0];
+  }
+
   async needsToBuyPlan(): Promise<boolean> {
-		if(this.subscriptionStatus === 'active') return true;
+		if(this.subscriptionStatus === 'active') return false;
 
 		if(this.subscriptionStatus === 'canceled') {
-			const nowFormatted = MomentUtils.formatDate(new Date(), 'YYYY-MM-DD');
+			const nowFormatted = DateUtils.formatDate(new Date(), 'YYYY-MM-DD');
       const canUsePlatformUntil = await this.canUsePlatformUntil();
-			const canUsePlatformUntilFormatted = MomentUtils.formatDate(canUsePlatformUntil, 'YYYY-MM-DD');
-			if(canUsePlatformUntilFormatted > nowFormatted) return true;
-			return false;
+			const canUsePlatformUntilFormatted = DateUtils.formatDate(canUsePlatformUntil, 'YYYY-MM-DD');
+			if(canUsePlatformUntilFormatted > nowFormatted) return false;
+			return true;
 		}
 
 
 		if(!this.subscriptionStatus) {
-			if(this.daysRemainingForTrial > 0) return true;
-			return false;
+			if(this.daysRemainingForTrial > 0) return false;
+			return true;
 		}
 
-		return false;
+		return true;
   }
 
   public async canUsePlatformUntil(): Promise<Date | null> {

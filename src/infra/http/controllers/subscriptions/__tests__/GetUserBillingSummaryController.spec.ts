@@ -3,7 +3,7 @@ import { TestUtils } from '../../../../../../tests/utils/TestUtils';
 import { find } from '../../../../../core/DependencyInjection';
 import { GetUserBillingSummaryUseCase } from '../../../../../domain/modules/users/usecases/GetUserBillingSummaryUseCase';
 import { app } from '../../../../../infra/app';
-import { DomainDates } from '../../../../../core/DomainDates';
+import { DateUtils } from '../../../../../core/DateUtils';
 import { UsersRepository, usersRepositoryAlias } from '../../../../../domain/modules/users/repositories/UsersRepository';
 import { User } from '../../../../../domain/modules/users/entities/User';
 
@@ -48,7 +48,7 @@ it('should call usecase', async () => {
         firstSixDigits: '123456',
         lastFourDigits: '7890',
       },
-      nextBillingAt: DomainDates.format(new Date(), 'DD/MM/YYYY'),
+      nextBillingAt: DateUtils.format(new Date(), 'DD/MM/YYYY'),
     }
   });
 

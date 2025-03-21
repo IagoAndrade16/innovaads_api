@@ -30,7 +30,7 @@ export class ApiProviderAxiosImpl implements ApiProviderAxios {
     }
   }
 
-  async post(url: string, data: JsObject, headers?: JsObject): Promise<ApiResponse> {
+  async post(url: string, data: JsObject | string, headers?: JsObject): Promise<ApiResponse> {
     const axiosRes = await axios.post(url, data, {
         headers: {
           ...this.defaultHeaders,

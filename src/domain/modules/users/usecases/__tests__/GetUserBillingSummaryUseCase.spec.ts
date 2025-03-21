@@ -1,5 +1,5 @@
 import { find } from "../../../../../core/DependencyInjection";
-import { DomainDates } from "../../../../../core/DomainDates";
+import { DateUtils } from "../../../../../core/DateUtils";
 import { PagarmeProvider, pagarmeProviderAlias } from "../../../../../providers/pagarme/PagarmeProvider";
 import { GetSubscriptionOutput } from "../../../../../providers/pagarme/types/GetSubscriptionTypes";
 import { DomainError } from "../../../../errors/DomainError";
@@ -59,7 +59,7 @@ it('should return user billing summary', async () => {
       id: '1',
     },
     subscription: {
-      nextBillingAt: DomainDates.format(new Date(), 'DD/MM/YYYY'),
+      nextBillingAt: DateUtils.format(new Date(), 'DD/MM/YYYY'),
       status: 'active',
       card: {
         brand: 'visa',

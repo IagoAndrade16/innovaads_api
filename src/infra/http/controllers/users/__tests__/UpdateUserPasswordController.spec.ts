@@ -21,7 +21,6 @@ describe('Schema validation', () => {
     expect(res.status).toBe(401);
   })
 
-
   it('should require necessary parameters', async () => {
     const res = await request(app).patch(route)
     .set('Authorization', `${authToken}`)

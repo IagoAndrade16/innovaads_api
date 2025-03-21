@@ -8,7 +8,7 @@ import { VerifyUser2FACodeUseCase } from "../../../../domain/modules/users/useca
 export class VerifyUser2FACodeController implements Controller {
   constructor (
     @inject(VerifyUser2FACodeUseCase)
-    private readonly verifyUser2FACodeUseCase: VerifyUser2FACodeUseCase,
+    private readonly usecase: VerifyUser2FACodeUseCase,
   ) {}
 
   private bodySchema = yup.object().shape({
@@ -19,7 +19,7 @@ export class VerifyUser2FACodeController implements Controller {
     const { code } = await this.bodySchema.validate(req.body, { abortEarly: false });
     const { id: userId } = req.user!;
 
-    await this.verifyUser2FACodeUseCase.execute({
+    await this.usecase.execute({
       code,
       userId,
     }); 

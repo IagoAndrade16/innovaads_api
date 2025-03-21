@@ -1,36 +1,45 @@
 import { container, InjectionToken } from "tsyringe";
+import { PackageDetailsRepository, packageDetailsRepositoryAlias } from "../domain/modules/packages/repositories/PackageDetailsRepository";
+import { PackagesRepository, packagesRepositoryAlias } from "../domain/modules/packages/repositories/PackagesRepository";
+import { SubscriptionsRepository, subscriptionsRepositoryAlias } from "../domain/modules/subscriptions/repositories/SubscriptionsRepository";
+import { Users2FARepository, users2FARepositoryAlias } from "../domain/modules/users/repositories/Users2FARepository";
+import { UsersForgotPassword2FARepository, usersForgotPassword2FARepositoryAlias } from "../domain/modules/users/repositories/UsersForgotPassword2FARepository";
 import { UsersRepository, usersRepositoryAlias } from "../domain/modules/users/repositories/UsersRepository";
+import { PackageDetailsRespositoryTypeOrm } from "../infra/database/typeorm/repositories/packages/PackageDetailsRepositoryTypeOrm";
+import { PackagesRespositoryTypeOrm } from "../infra/database/typeorm/repositories/packages/PackagesRepositoryTypeOrm";
+import { SubscriptionsRepositoryTypeOrm } from "../infra/database/typeorm/repositories/subscriptions/SubscriptionsRepositoryTypeOrm";
+import { Users2FARepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/Users2FARepositoryTypeOrm";
+import { UsersForgotPassword2FARepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/UsersForgotPassword2FARepositoryTypeOrm";
 import { UsersRepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/UsersRepositoryTypeOrm";
+import { ApiProviderAxios, apiProviderAxiosAlias } from "../providers/api/ApiProviderAxios";
+import { ApiProviderAxiosImpl } from "../providers/api/implementations/ApiProviderAxiosImpl";
+import { geoCodingAlias, GeoCodingProvider } from "../providers/geocoding/GeoCodingProvider";
+import { GeoCodingProviderImpl } from "../providers/geocoding/implementations/GeoCodingProviderImpl";
 import { HashProvider, hashProviderAlias } from "../providers/hash/HashProvider";
 import { HashProviderImpl } from "../providers/hash/implementations/HashProviderImpl";
 import { JwtProvider, jwtProviderAlias } from "../providers/jwt/JwtProvider";
 import { JwtProviderImpl } from "../providers/jwt/implementations/JwtProviderImpl";
-import { ApiProviderAxios, apiProviderAxiosAlias } from "../providers/api/ApiProviderAxios";
-import { ApiProviderAxiosImpl } from "../providers/api/implementations/ApiProviderAxiosImpl";
 import { EmailSenderProvider, emailSenderProviderAlias } from "../providers/mail/EmailSenderProvider";
 import { EmailSenderProviderImpl } from "../providers/mail/implementations/EmailSenderProviderImpl";
-import { TemplaterProvider, templaterProviderAlias } from "../providers/templater/TemplaterProvider";
-import { TemplaterHandlebarsImpl } from "../providers/templater/implementations/TemplaterHandlebarsImpl";
-import { Users2FARepository, users2FARepositoryAlias } from "../domain/modules/users/repositories/Users2FARepository";
-import { Users2FARepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/Users2FARepositoryTypeOrm";
-import { RandomProvider, randomProviderAlias } from "../providers/random/RandomProvider";
-import { RandomProviderImpl } from "../providers/random/implementations/RandomProviderImpl";
-import { TrendsProvider, trendsProviderAlias } from "../providers/trends/TrendsProvider";
-import { TrendsProviderImpl } from "../providers/trends/implementations/TrendsProviderImpl";
-import { geoCodingAlias, GeoCodingProvider } from "../providers/geocoding/GeoCodingProvider";
-import { GeoCodingProviderImpl } from "../providers/geocoding/implementations/GeoCodingProviderImpl";
-import { PackageDetailsRepository, packageDetailsRepositoryAlias } from "../domain/modules/packages/repositories/PackageDetailsRepository";
-import { PackageDetailsRespositoryTypeOrm } from "../infra/database/typeorm/repositories/packages/PackageDetailsRepositoryTypeOrm";
-import { PackagesRepository, packagesRepositoryAlias } from "../domain/modules/packages/repositories/PackagesRepository";
-import { PackagesRespositoryTypeOrm } from "../infra/database/typeorm/repositories/packages/PackagesRepositoryTypeOrm";
 import { PagarmeProvider, pagarmeProviderAlias } from "../providers/pagarme/PagarmeProvider";
 import { PagarmeProviderImpl } from "../providers/pagarme/implementations/PagarmeProviderImpl";
-import { usersForgotPassword2FARepositoryAlias, UsersForgotPassword2FARepository } from "../domain/modules/users/repositories/UsersForgotPassword2FARepository";
-import { UsersForgotPassword2FARepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/UsersForgotPassword2FARepositoryTypeOrm";
-import { SubscriptionsRepository, subscriptionsRepositoryAlias } from "../domain/modules/subscriptions/repositories/SubscriptionsRepository";
-import { SubscriptionsRepositoryTypeOrm } from "../infra/database/typeorm/repositories/subscriptions/SubscriptionsRepositoryTypeOrm";
-import { AdsProvider, adsProviderAlias } from "../providers/ads/AdsProvider";
-import { AdsProviderImpl } from "../providers/ads/implementations/AdsLibraryProviderImpl";
+import { RandomProvider, randomProviderAlias } from "../providers/random/RandomProvider";
+import { RandomProviderImpl } from "../providers/random/implementations/RandomProviderImpl";
+import { TemplaterProvider, templaterProviderAlias } from "../providers/templater/TemplaterProvider";
+import { TemplaterHandlebarsImpl } from "../providers/templater/implementations/TemplaterHandlebarsImpl";
+import { TrendsProvider, trendsProviderAlias } from "../providers/trends/TrendsProvider";
+import { TrendsProviderImpl } from "../providers/trends/implementations/TrendsProviderImpl";
+import { FacebookCredentialsRepository, facebookCredentialsRepositoryAlias } from "../domain/modules/users/repositories/FacebookCredetialsRepository";
+import { FacebookCredentialsRepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/FacebookCredentialsRepositoryTypeOrm";
+import { GoogleAdsApiProvider, googleAdsApiProviderAlias } from "../providers/google/GoogleAdsApiProvider";
+import { GoogleAdsApiProviderImpl } from "../providers/google/implementations/GoogleAdsApiProviderImpl";
+import { GoogleAuthProvider, googleAuthProviderAlias } from "../providers/google/GoogleAuthProvider";
+import { GoogleAuthProviderImpl } from "../providers/google/implementations/GoogleAuthProviderImpl";
+import { GoogleCredentialsRepository, googleCredentialsRepositoryAlias } from "../domain/modules/users/repositories/GoogleCredentialsRepository";
+import { GoogleCredentialsRepositoryTypeOrm } from "../infra/database/typeorm/repositories/users/GoogleCrendentialsRepositoryTypeOrm";
+import { FacebookGraphApiAds, facebookGraphApiAdsAlias } from "../providers/facebook/FacebookGraphApiAds";
+import { FacebookGraphApiAdsImpl } from "../providers/facebook/implementations/FacebookGraphApiAdsImpl";
+
 
 
 export class DependencyInjection {
@@ -51,7 +60,11 @@ export class DependencyInjection {
     container.registerSingleton<PagarmeProvider>(pagarmeProviderAlias, PagarmeProviderImpl);
     container.registerSingleton<UsersForgotPassword2FARepository>(usersForgotPassword2FARepositoryAlias, UsersForgotPassword2FARepositoryTypeOrm);
     container.registerSingleton<SubscriptionsRepository>(subscriptionsRepositoryAlias, SubscriptionsRepositoryTypeOrm);
-    container.registerSingleton<AdsProvider>(adsProviderAlias, AdsProviderImpl);
+    container.registerSingleton<FacebookCredentialsRepository>(facebookCredentialsRepositoryAlias, FacebookCredentialsRepositoryTypeOrm);
+    container.registerSingleton<GoogleAdsApiProvider>(googleAdsApiProviderAlias, GoogleAdsApiProviderImpl);
+    container.registerSingleton<GoogleAuthProvider>(googleAuthProviderAlias, GoogleAuthProviderImpl);
+    container.registerSingleton<GoogleCredentialsRepository>(googleCredentialsRepositoryAlias, GoogleCredentialsRepositoryTypeOrm);
+    container.registerSingleton<FacebookGraphApiAds>(facebookGraphApiAdsAlias, FacebookGraphApiAdsImpl);
   }
 }
 

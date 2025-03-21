@@ -209,11 +209,11 @@ export class Utils {
 		return strWithoutSpecials;
 	}
 
-	public static buildQueryParams(data: JsObject): string {
+	public static buildQueryParams(data?: JsObject): string {
 		if (!data || Object.keys(data).length === 0) {
 			return '';
 		}
 
-		return Object.keys(data).map((key) => `${key}=${data[key]}`).join('&');
+		return `?${Object.keys(data).map((key) => `${key}=${data[key]}`).join('&')}`;
 	}
 }

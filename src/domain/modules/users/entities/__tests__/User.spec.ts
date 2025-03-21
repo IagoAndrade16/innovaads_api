@@ -10,39 +10,39 @@ describe('needsToBuyPlan', () => {
   it('should return true if subscriptionStatus is active', async () => {
     const user = new User();
     user.subscriptionStatus = 'active';
-    expect(await user.needsToBuyPlan()).toBe(true);
+    expect(await user.needsToBuyPlan()).toBe(false);
   });
 
   it('should return true if subscriptionStatus is canceled and canUsePlatformUntil is not expired', async () => {
     const user = new User();
     user.subscriptionStatus = 'canceled';
     jest.spyOn(user, 'canUsePlatformUntil').mockResolvedValue(moment().add(1, 'days').toDate());
-    expect(await user.needsToBuyPlan()).toBe(true);
+    expect(await user.needsToBuyPlan()).toBe(false);
   });
 
   it('should return false if subscriptionStatus is canceled and canUsePlatformUntil is expired', async () => {
     const user = new User();
     user.subscriptionStatus = 'canceled';
     jest.spyOn(user, 'canUsePlatformUntil').mockResolvedValue(new Date('2021-01-01'));
-    expect(await user.needsToBuyPlan()).toBe(false);
+    expect(await user.needsToBuyPlan()).toBe(true);
   });
 
   it('should return true if subscriptionStatus is not defined and daysRemainingForTrial is greater than 0', async () => {
     const user = new User();
     jest.spyOn(user, 'daysRemainingForTrial', 'get').mockReturnValue(1);
-    expect(await user.needsToBuyPlan()).toBe(true);
+    expect(await user.needsToBuyPlan()).toBe(false);
   });
 
   it('should return false if subscriptionStatus is not defined and daysRemainingForTrial is equal to 0', async () => {
     const user = new User();
     jest.spyOn(user, 'daysRemainingForTrial', 'get').mockReturnValue(0);
-    expect(await user.needsToBuyPlan()).toBe(false);
+    expect(await user.needsToBuyPlan()).toBe(true);
   });
 
   it('should return false if subscriptionStatus is not defined and daysRemainingForTrial is less than 0', async () => {
     const user = new User();
     jest.spyOn(user, 'daysRemainingForTrial', 'get').mockReturnValue(-1);
-    expect(await user.needsToBuyPlan()).toBe(false);
+    expect(await user.needsToBuyPlan()).toBe(true);
   });
 });
 
