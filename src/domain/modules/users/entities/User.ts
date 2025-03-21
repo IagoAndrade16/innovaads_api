@@ -5,6 +5,7 @@ import { JwtProvider, jwtProviderAlias } from "../../../../providers/jwt/JwtProv
 import { PagarmeProvider, pagarmeProviderAlias } from "../../../../providers/pagarme/PagarmeProvider";
 import { DateUtils } from "../../../../core/DateUtils";
 import { FacebookCredential } from "./FacebookCredential";
+import { GoogleCredential } from "./GoogleCredential";
 
 
 export type UserRole = 'user' | 'admin';
@@ -56,6 +57,9 @@ export class User {
   @OneToMany(() => FacebookCredential, facebookCredential => facebookCredential.user)
   facebookCredentials: FacebookCredential[];
 
+  @OneToMany(() => GoogleCredential, googleCredential => googleCredential.user)
+  googleCredentials: GoogleCredential[];
+
   get isOnTrial(): boolean {
     return moment(this.createdAt).add(7, 'days').isAfter(moment());
   }
@@ -71,6 +75,11 @@ export class User {
   get facebookCredential(): FacebookCredential | null {
     if(!this.facebookCredentials) return null;
     return this.facebookCredentials.filter(credential => !credential.deleted)[0];
+  }
+
+  get googleCredential(): GoogleCredential | null {
+    if(!this.googleCredentials) return null;
+    return this.googleCredentials.filter(credential => !credential.deleted)[0];
   }
 
   async needsToBuyPlan(): Promise<boolean> {

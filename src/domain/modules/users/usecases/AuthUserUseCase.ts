@@ -21,6 +21,7 @@ export type AuthUserUseCaseOutput = {
   subscriptionStatus: UserSubscriptionStatus | null;
   canUsePlatformUntil: Date | null;
   facebookAccount: AuthUserUseCaseFacebookAccount | null;
+  googleAccount: AuthUserUseCaseGoogleAccount | null;
   daysRemainingForTrial?: number;
 }
 
@@ -33,6 +34,10 @@ type AuthUserUseCaseFacebookAccount = {
   expiresIn: Date | null;
 }
 
+type AuthUserUseCaseGoogleAccount = {
+  expiresRefreshIn: Date | null;
+  expiresIn: Date | null;
+}
 @singleton()
 export class AuthUserUseCase implements UseCase<AuthUserUseCaseInput, AuthUserUseCaseOutput> {
   constructor(
@@ -74,6 +79,10 @@ export class AuthUserUseCase implements UseCase<AuthUserUseCaseInput, AuthUserUs
       facebookAccount: user.facebookCredential ? {
         userIdOnFacebook: user.facebookCredential?.userIdOnFacebook,
         expiresIn: user.facebookCredential?.expiresIn,
+      } : null,
+      googleAccount: user.googleCredential ? {
+        expiresRefreshIn: user.googleCredential.expiresRefreshIn,
+        expiresIn: user.googleCredential.expiresIn,
       } : null,
     }
   }

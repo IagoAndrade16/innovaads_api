@@ -7,6 +7,7 @@ import { UpdateUserPasswordController } from "../controllers/users/UpdateUserPas
 import { _ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { users2faRouter } from "./user-2fa.routes";
 import { usersFacebookAccountRouter } from "./user-facebook-account.routes";
+import { usersGoogleAccountRouter } from "./user-google-account.routes";
 
 export const usersRouter = Router();
 
@@ -18,6 +19,7 @@ usersRouter.post('/auth', (req, res) => find(AuthUserController).handle(req, res
 
 usersRouter.use('/2fa', users2faRouter);
 usersRouter.use('/facebook-account', usersFacebookAccountRouter);
+usersRouter.use('/google-account', usersGoogleAccountRouter);
 
 
 
