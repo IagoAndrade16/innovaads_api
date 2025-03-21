@@ -214,7 +214,7 @@ export class Utils {
 			return '';
 		}
 
-		return Object.keys(data).map((key) => `${key}=${data[key]}`).join('&');
+		return `?${Object.keys(data).map((key) => `${key}=${data[key]}`).join('&')}`;
 	}
 
 }

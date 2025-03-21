@@ -39,6 +39,10 @@ export class Environment {
 		GOOGLE_OAUTH_BASE_URL: yup.string().required(),
 		GOOGLE_REDIRECT_URI: yup.string().required(),
 		GOOGLE_CLIENT_SECRET_KEY: yup.string().required(),
+
+		FACEBOOK_APP_ID: yup.string().required(),
+		FACEBOOK_APP_SECRET: yup.string().required(),
+		
 		GOOGLE_DEVELOPER_TOKEN: yup.string().required(),
   });
 
