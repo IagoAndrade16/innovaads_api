@@ -4,6 +4,8 @@ import { UserNotFoundError } from "../../../errors/UserNotFoundError";
 import { FacebookCredential } from "../entities/FacebookCredential";
 import { FacebookCredentialsRepository, facebookCredentialsRepositoryAlias } from "../repositories/FacebookCredetialsRepository";
 import { UsersRepository, usersRepositoryAlias } from "../repositories/UsersRepository";
+import { FacebookGraphApiAds, facebookGraphApiAdsAlias } from "../../../../providers/facebook/FacebookGraphApiAds";
+import { DomainError } from "../../../errors/DomainError";
 
 export type ConnectFacebookAccountUseCaseInput = {
   userId: string;
@@ -24,6 +26,9 @@ export class ConnectFacebookAccountUseCase implements UseCase<ConnectFacebookAcc
 
     @inject(facebookCredentialsRepositoryAlias)
     private readonly facebookCredentialsRepository: FacebookCredentialsRepository,
+
+    @inject(facebookGraphApiAdsAlias)
+    private readonly facebookGraphApiAds: FacebookGraphApiAds,
   ) {}
 
   async execute(input: ConnectFacebookAccountUseCaseInput): Promise<ConnectFacebookAccountUseCaseOutput> {
@@ -33,9 +38,19 @@ export class ConnectFacebookAccountUseCase implements UseCase<ConnectFacebookAcc
       throw new UserNotFoundError();
     }
 
-    const expiresIn = FacebookCredential.generateExpirationDate(input.expiresIn);
+    const getLongLivedAccessToken = await this.facebookGraphApiAds.getLongLivedAccessToken({
+      access_token: input.accessToken,
+    })
+
+    if(getLongLivedAccessToken.status !== 'SUCCESS') {
+      throw new DomainError(400, 'FAIL_TO_GENERATE_LONG_LIVED_ACCESS_TOKEN')
+    }
+
+    const longLivedAccessToken = getLongLivedAccessToken.data!;
+
+    const expiresIn = FacebookCredential.generateExpirationDate(longLivedAccessToken.expires_in);
     const savedCredential = await this.facebookCredentialsRepository.save({
-      accessToken: input.accessToken,
+      accessToken: longLivedAccessToken.access_token,
       expiresIn,
       userId: input.userId,
       userIdOnFacebook: input.userIdOnFacebook,

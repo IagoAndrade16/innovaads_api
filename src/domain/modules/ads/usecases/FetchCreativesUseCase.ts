@@ -1,21 +1,23 @@
 import { inject, singleton } from "tsyringe";
 import { UseCase } from "../../../../core/UseCase";
+import { Creative, CreativePaginationParams, FetchFacebookAdsInput } from "../../../../providers/facebook/@types/FacebookGraphApiAdsTypes";
+import { FacebookGraphApiAds, facebookGraphApiAdsAlias } from "../../../../providers/facebook/FacebookGraphApiAds";
+import { DomainError } from "../../../errors/DomainError";
 import { UnauthorizedError } from "../../../errors/Unauthorized";
 import { UsersRepository, usersRepositoryAlias } from "../../users/repositories/UsersRepository";
-import { FacebookGraphApiAds, facebookGraphApiAdsAlias } from "../../../../providers/facebook/FacebookGraphApiAds";
-import { FetchFacebookAdsInput, FetchFacebookAdsOutput } from "../../../../providers/facebook/@types/FacebookGraphApiAdsTypes";
 
 export type FetchCreativesUseCaseInput = {
   filters: FetchFacebookAdsInput['filters'];
   fields: FetchFacebookAdsInput['fields'];
+  nextRequestUrl?: string;
   userId: string;
 }
 
 export type FetchCreativesUseCaseOutput = {
-  creatives: FetchFacebookAdsOutput['ads'];
+  creatives: Creative[];
+  paging: CreativePaginationParams;
 }
 
-// TODO: unit tests
 @singleton()
 export class FetchCreativesUseCase implements UseCase<FetchCreativesUseCaseInput, FetchCreativesUseCaseOutput> {
   constructor(
@@ -41,9 +43,21 @@ export class FetchCreativesUseCase implements UseCase<FetchCreativesUseCaseInput
 
     const adsResponse = await this.facebookGraphApiAds.fetchCreatives({
       filters: input.filters,
-      fields: input.fields,
+      fields: FacebookGraphApiAds.baseFieldsToFetchCreatives,
+      nextRequestUrl: input.nextRequestUrl,
     }, { access_token: facebookAccount.accessToken! });
 
-    return { creatives: adsResponse.ads }
+    if(adsResponse.status === 'SUCCESS') {
+      return { 
+        creatives: adsResponse.data!.ads, 
+        paging: adsResponse.data!.paging
+      };
+    }
+    
+    if(adsResponse.status === 'UNAUTHORIZED') {
+      throw new DomainError(400, 'INVALID_FACEBOOK_TOKEN');
+    }
+
+    throw new DomainError(400, 'ERROR_FETCHING_ADS');
   }
 }

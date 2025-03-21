@@ -69,7 +69,7 @@ export type FetchFacebookAdsInput = {
   fields: {
     id?: boolean;
     ad_creation_time?: boolean;
-    ad_creative_body?: boolean;
+    ad_creative_bodies?: boolean;
     ad_creative_link_captions?: boolean;
     ad_creative_link_descriptions?: boolean;
     ad_creative_link_titles?: boolean;
@@ -94,51 +94,71 @@ export type FetchFacebookAdsInput = {
     target_ages?: boolean;
     target_gender?: boolean;
     target_location?: boolean;
-  }
+  },
+  nextRequestUrl?: string;
 };
 
 export type FetchFacebookAdsOutput = {
-  ads: {
-    id?: string;
-    ad_creation_time?: string;
-    ad_creative_body?: string[];
-    ad_creative_link_captions?: string[];
-    ad_creative_link_descriptions?: string[];
-    ad_creative_link_titles?: string[];
-    ad_delivery_start_time?: string;
-    ad_delivery_stop_time?: string;
-    ad_snapshot_url?: string;
-    age_country_gender_reach_breakdown?: {
-      age_range?: string;
-      female?: number;
-      male?: number;
-      unknown?: number;
-    }[];
-    beneficiary_payers?: {
-      beneficiary?: string;
-      current?: string;
-      payer?: string;
-    }[];
-    br_total_reach?: number
-    bylines?: string;
-    currency?: string;
-    delivery_by_region: AudienceDistribution[];
-    demographic_distribution?: AudienceDistribution[];
-    estimated_audience_size?: InsightsRangeValue;
-    eu_total_reach?: number;
-    impressions?: InsightsRangeValue;
-    languages?: string[];
-    page_id?: string;
-    page_name?: string;
-    publisher_platforms?: AdPublisherPlatform[];
-    spend?: InsightsRangeValue;
-    target_ages?: string[];
-    target_gender?: string[];
-    target_location?: {
-      excluded: boolean;
-      name: string;
-      num_obfuscated: number;
-      type: 'country' | 'region' | 'postal' | 'code' | 'city';
-    }[];
-  }[];
+  status: 'SUCCESS' | 'BAD_REQUEST' | 'UNAUTHORIZED' | 'ERROR';
+  data?: {
+    paging: CreativePaginationParams;
+    ads: Creative[];
+  }
 };
+
+export type Creative = {
+  id?: string;
+  ad_creation_time?: string;
+  ad_creative_body?: string[];
+  ad_creative_link_captions?: string[];
+  ad_creative_link_descriptions?: string[];
+  ad_creative_link_titles?: string[];
+  ad_delivery_start_time?: string;
+  ad_delivery_stop_time?: string;
+  ad_snapshot_url?: string;
+  age_country_gender_reach_breakdown?: {
+    age_range?: string;
+    female?: number;
+    male?: number;
+    unknown?: number;
+  }[];
+  beneficiary_payers?: {
+    beneficiary?: string;
+    current?: string;
+    payer?: string;
+  }[];
+  br_total_reach?: number
+  bylines?: string;
+  currency?: string;
+  delivery_by_region: AudienceDistribution[];
+  demographic_distribution?: AudienceDistribution[];
+  estimated_audience_size?: InsightsRangeValue;
+  eu_total_reach?: number;
+  impressions?: InsightsRangeValue;
+  languages?: string[];
+  page_id?: string;
+  page_name?: string;
+  publisher_platforms?: AdPublisherPlatform[];
+  spend?: InsightsRangeValue;
+  target_ages?: string[];
+  target_gender?: string[];
+  target_location?: {
+    excluded: boolean;
+    name: string;
+    num_obfuscated: number;
+    type: 'country' | 'region' | 'postal' | 'code' | 'city';
+  }[];
+}
+
+export type CreativePaginationParams = {
+  cursors: {
+    before: string;
+    after: string;
+  };
+  next?: string;
+  previous?: string;
+}
+
+export type HandleErrorResponse = {
+  status: 'BAD_REQUEST' | 'UNAUTHORIZED' | 'ERROR';
+}
